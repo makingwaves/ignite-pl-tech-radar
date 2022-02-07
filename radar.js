@@ -54,9 +54,6 @@ function radar_visualization(config) {
     { radius: 400 }
   ];
 
-  const title_offset =
-    { x: -675, y: -420 };
-
   const footer_offset =
     { x: -675, y: 420 };
 
@@ -227,7 +224,7 @@ function radar_visualization(config) {
     .attr("height", 1)
     .attr("id", "solid");
   filter.append("feFlood")
-    .attr("flood-color", "rgb(0, 0, 0, 0.8)");
+    .attr("flood-color", "#676A6E");
   filter.append("feComposite")
     .attr("in", "SourceGraphic");
 
@@ -245,9 +242,10 @@ function radar_visualization(config) {
         .text(config.rings[i].name)
         .attr("y", -rings[i].radius + 62)
         .attr("text-anchor", "middle")
-        .style("fill", "#e5e5e5")
+        .style("fill", "#CECFD2")
         .style("font-size", "42px")
-        .style("font-weight", "bold")
+        .style("opacity", "0.5")
+        .style("font-weight", "700")
         .style("pointer-events", "none")
         .style("user-select", "none");
     }
@@ -255,9 +253,9 @@ function radar_visualization(config) {
 
   function legend_transform(quadrant, ring, index=null) {
     var dx = ring < 2 ? 0 : 120;
-    var dy = (index == null ? -16 : index * 12);
+    var dy = (index == null ? -16 : index * 16);
     if (ring % 2 === 1) {
-      dy = dy + 36 + segmented[quadrant][ring-1].length * 12;
+      dy = dy + 48 + segmented[quadrant][ring-1].length * 12;
     }
     return translate(
       legend_offset[quadrant].x + dx,
@@ -268,18 +266,12 @@ function radar_visualization(config) {
   // draw title and legend (only in print layout)
   if (config.print_layout) {
 
-    // title
-    radar.append("text")
-      .attr("transform", translate(title_offset.x, title_offset.y))
-      .text(config.title)
-      .style("font-size", "34px");
-
     // footer
     radar.append("text")
       .attr("transform", translate(footer_offset.x, footer_offset.y))
       .text("▲ moved up     ▼ moved down")
       .attr("xml:space", "preserve")
-      .style("font-size", "10px");
+      .style("font-size", "12px");
 
     // legend
     var legend = radar.append("g");
@@ -295,8 +287,8 @@ function radar_visualization(config) {
         legend.append("text")
           .attr("transform", legend_transform(quadrant, ring))
           .text(config.rings[ring].name)
-          .style("font-size", "12px")
-          .style("font-weight", "bold");
+          .style("font-size", "14px")
+          .style("font-weight", "700");
         legend.selectAll(".legend" + quadrant + ring)
           .data(segmented[quadrant][ring])
           .enter()
@@ -309,7 +301,7 @@ function radar_visualization(config) {
               .attr("class", "legend" + quadrant + ring)
               .attr("id", function(d, i) { return "legendItem" + d.id; })
               .text(function(d, i) { return d.id + ". " + d.label; })
-              .style("font-size", "11px")
+              .style("font-size", "14px")
               .on("mouseover", function(d) { showBubble(d); highlightLegendItem(d); })
               .on("mouseout", function(d) { hideBubble(d); unhighlightLegendItem(d); });
       }
@@ -331,13 +323,13 @@ function radar_visualization(config) {
   bubble.append("rect")
     .attr("rx", 4)
     .attr("ry", 4)
-    .style("fill", "#333");
+    .style("fill", "#676A6E");
   bubble.append("text")
     .style("font-size", "10px")
-    .style("fill", "#fff");
+    .style("fill", "#F0EEEA");
   bubble.append("path")
     .attr("d", "M 0,0 10,0 5,8 z")
-    .style("fill", "#333");
+    .style("fill", "#676A6E");
 
   function showBubble(d) {
     if (d.active || config.print_layout) {
@@ -366,7 +358,7 @@ function radar_visualization(config) {
   function highlightLegendItem(d) {
     var legendItem = document.getElementById("legendItem" + d.id);
     legendItem.setAttribute("filter", "url(#solid)");
-    legendItem.setAttribute("fill", "white");
+    legendItem.setAttribute("fill", "#F0EEEA");
   }
 
   function unhighlightLegendItem(d) {
@@ -418,7 +410,7 @@ function radar_visualization(config) {
         .attr("y", 3)
         .attr("text-anchor", "middle")
         .style("fill", "#fff")
-        .style("font-size", function(d) { return blip_text.length > 2 ? "8px" : "9px"; })
+        .style("font-size", function(d) { return blip_text.length > 2 ? "9px" : "11px"; })
         .style("pointer-events", "none")
         .style("user-select", "none");
     }
