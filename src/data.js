@@ -143,132 +143,132 @@ export const data = [
         "ring": Ring.Assess,
         "label": "NestJS",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Adopt,
         "label": "Optimizely CMS",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Trial,
         "label": "Optimizely Commerce",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Hold,
         "label": "Umbraco",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Adopt,
         "label": "C#",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Adopt,
         "label": "ASP.NET",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Adopt,
         "label": "AWS",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Adopt,
         "label": "Amazon DynamoDB",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Adopt,
         "label": "Amazon SQS",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Adopt,
         "label": "Amazon S3",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Adopt,
         "label": "Amazon CloudFront",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Trial,
         "label": "AWS Lambda",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Trial,
         "label": "AWS CloudFormation",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Assess,
         "label": "AWS Cloud Development Kit",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Trial,
         "label": "Docker",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Assess,
         "label": "Terraform",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Assess,
         "label": "Serverless Framework",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Trial,
         "label": "GitHub Actions",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
     {
         "quadrant": Quadrant.BottomLeft,
         "ring": Ring.Assess,
         "label": "OpenAPI",
         "active": true,
-        "moved": 0
+        "moved": Moved.None
     },
 ]
