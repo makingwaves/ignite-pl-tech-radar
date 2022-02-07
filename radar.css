@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'Aften Screen';
+  src: url('font-aften.ttf') format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  background: #EEEEF0;
+  font-family: 'Aften Screen', arial, helvetica, sans-serif;
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+h3 {
+  margin-top: 50px;
+}
+li {
+  margin: 25px 50px 0 0;
+}
+
+#radar {
+
+}

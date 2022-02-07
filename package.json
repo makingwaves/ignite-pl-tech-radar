@@ -1,0 +1,18 @@
+{
+  "name": "noa-pl-tech-radar",
+  "version": "1.0.0",
+  "main": "index.html",
+  "private": true,
+  "scripts": {
+    "start": "serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makingwaves/ignite-pl-tech-radar.git"
+  },
+  "devDependencies": {
+    "serve": "^13.0.2"
+  },
+  "author": "",
+  "license": "ISC"
+}

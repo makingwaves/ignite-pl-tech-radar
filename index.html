@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>NoA Ignite Poland Tech Radar</title>
+    <!--<link rel="shortcut icon" href="">-->
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="radar.js"></script>
+
+    <link rel="stylesheet" href="radar.css">
+</head>
+
+<body>
+
+<svg id="radar"></svg>
+
+<script>
+    const Quadrant = {
+        BottomRight: 0,
+        BottomLeft: 1,
+        TopLeft: 2,
+        TopRight: 3
+    }
+
+    const Moved = {
+        None: 0,
+        In: 1,
+        Out: -1
+    }
+
+    const Ring = {
+        Adopt: 0,
+        Trial: 1,
+        Assess: 2,
+        Hold: 3
+    }
+
+    radar_visualization({
+        svg_id: "radar",
+        width: 1450,
+        height: 1000,
+        colors: {
+            background: "#EEEEF0",
+            grid: "#CECFD2",
+            inactive: "#ddd"
+        },
+        title: "NoA Ignite Poland - Tech Radar Feb 2022",
+        quadrants: [
+            {name: "Languages & Frameworks"},
+            {name: "TODO"},
+            {name: "TODO"},
+            {name: "TODO"},
+        ],
+        rings: [
+            {name: "ADOPT", color: "#EB4646"},
+            {name: "TRIAL", color: "#CAE0DC"},
+            {name: "ASSESS", color: "#DBD1C7"},
+            {name: "HOLD", color: "#001932"}
+        ],
+        print_layout: true,
+        //ENTRIES
+        entries: [
+            {
+                "quadrant": Quadrant.BottomRight,
+                "ring": Ring.Adopt,
+                "label": "React.js",
+                "active": true,
+                "moved": 0
+            },
+            {
+                "quadrant": Quadrant.BottomRight,
+                "ring": Ring.Adopt,
+                "label": "Next.js",
+                "active": true,
+                "moved": 0
+            },
+            {
+                "quadrant": Quadrant.BottomRight,
+                "ring": Ring.Adopt,
+                "label": "TypeScript",
+                "active": true,
+                "moved": 0
+            },
+            {
+                "quadrant": Quadrant.BottomRight,
+                "ring": Ring.Hold,
+                "label": "JavaScript",
+                "active": true,
+                "moved": 0
+            },
+            {
+                "quadrant": Quadrant.BottomRight,
+                "ring": Ring.Trial,
+                "label": "Node.js",
+                "active": true,
+                "moved": 0
+            },
+        ]
+    });
+</script>
+
+
+</body>
+</html>
