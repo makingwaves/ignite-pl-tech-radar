@@ -18,7 +18,8 @@
     "url": "git+https://github.com/makingwaves/ignite-pl-tech-radar.git"
   },
   "devDependencies": {
-    "parcel": "^2.2.1"
+    "parcel": "^2.2.1",
+    "prettier": "^2.5.1"
   },
   "author": "",
   "license": "ISC"
