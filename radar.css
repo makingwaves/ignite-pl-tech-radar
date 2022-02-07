@@ -9,9 +9,7 @@ body {
   background: #EEEEF0;
   font-family: 'Aften Screen', arial, helvetica, sans-serif;
   padding: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
 
 }
 h3 {
@@ -23,4 +21,14 @@ li {
 
 #radar {
 
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  width: 200px;
 }
