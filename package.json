@@ -9,7 +9,8 @@
   },
   "targets": {
     "githubPages": {
-      "distDir": "docs"
+      "distDir": "docs",
+      "publicUrl": "/ignite-pl-tech-radar"
     }
   },
   "repository": {
