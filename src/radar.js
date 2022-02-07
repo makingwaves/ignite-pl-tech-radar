@@ -402,6 +402,7 @@ function radar_visualization(config) {
         .attr("fill", d.color);
     }
 
+
     // blip text
     if (d.active || config.print_layout) {
       var blip_text = config.print_layout ? d.id : d.label.match(/[a-z]/i);
@@ -409,7 +410,7 @@ function radar_visualization(config) {
         .text(blip_text)
         .attr("y", 3)
         .attr("text-anchor", "middle")
-        .style("fill", "#fff")
+        .style("fill", config.rings[d.ring].textColor)
         .style("font-size", function(d) { return blip_text.length > 2 ? "9px" : "11px"; })
         .style("pointer-events", "none")
         .style("user-select", "none");
