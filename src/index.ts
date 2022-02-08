@@ -3,8 +3,8 @@ import { Radar } from "./radar";
 
 new Radar({
   svg_id: "radar",
-  width: 1450,
-  height: 1000,
+  width: 800,
+  height: 800,
   colors: {
     background: "#F0EEEA",
     grid: "#CECFD2",
@@ -24,4 +24,4 @@ new Radar({
   ],
   print_layout: true,
   entries: data,
-}).render()
+}).render();

@@ -27,5 +27,9 @@
     "@types/d3": "4.11.0"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": true
+  }
 }

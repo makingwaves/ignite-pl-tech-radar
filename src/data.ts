@@ -1,4 +1,4 @@
-import {Item, Quadrant, Ring, Moved} from "./radar";
+import { Item, Quadrant, Ring, Moved } from "./radar";
 
 export const data: Item[] = [
   {
@@ -35,7 +35,7 @@ export const data: Item[] = [
     label: "Node.js",
     active: true,
     moved: Moved.None,
-    link: 'https://nodejs.org/en/',
+    link: "https://nodejs.org/en/",
   },
   {
     quadrant: Quadrant.TopLeft,
