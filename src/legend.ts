@@ -58,7 +58,16 @@ export class Legend {
       item.innerText = label;
       item.dataset.label = label;
 
-      relatedRingElement.append(item);
+      if (entryItem.link) {
+        const linkEl = document.createElement("a");
+        linkEl.setAttribute("href", entryItem.link);
+        linkEl.setAttribute("target", "_blank");
+
+        linkEl.append(item);
+        relatedRingElement.append(linkEl);
+      } else {
+        relatedRingElement.append(item);
+      }
     });
   }
 

@@ -95,3 +95,8 @@ h1 {
 .big-dot {
 
 }
+
+a{
+    color: inherit;
+    text-decoration: none;
+}
