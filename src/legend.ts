@@ -63,9 +63,10 @@ export class Legend {
   }
 
   highlightByLabel(label: string) {
-    document
-      .querySelector(`[data-label="${label}"]`)
-      .classList.add("item-highlight");
+    const el = document.querySelector(`[data-label="${label}"]`);
+
+    el.classList.add("item-highlight");
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   removeHighlightByLabel(label: string) {

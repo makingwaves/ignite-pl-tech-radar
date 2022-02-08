@@ -79,5 +79,6 @@ h1 {
 }
 
 .item-highlight {
+  font-weight: 700;
   transform: translateX(10px);
 }
