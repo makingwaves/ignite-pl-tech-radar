@@ -18,6 +18,9 @@
     "type": "git",
     "url": "git+https://github.com/makingwaves/ignite-pl-tech-radar.git"
   },
+  "dependencies": {
+    "d3": "4.13.0"
+  },
   "devDependencies": {
     "parcel": "^2.2.1",
     "prettier": "^2.5.1"

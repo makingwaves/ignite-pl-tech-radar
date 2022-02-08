@@ -1,30 +1,4 @@
-enum Quadrant {
-  BottomRight = 0,
-  BottomLeft = 1,
-  TopLeft = 2,
-  TopRight = 3,
-}
-
-enum Moved {
-  None = 0,
-  In = 1,
-  Out = -1,
-}
-
-enum Ring {
-  Adopt = 0,
-  Trial = 1,
-  Assess = 2,
-  Hold = 3,
-}
-
-type Item = {
-  quadrant: Quadrant;
-  ring: Ring;
-  label: string;
-  active: boolean;
-  moved: Moved;
-};
+import {Item, Quadrant, Ring, Moved} from "./radar";
 
 export const data: Item[] = [
   {

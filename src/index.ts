@@ -1,7 +1,7 @@
 import { data } from "./data";
-import { renderRadar } from "./radar";
+import { Radar } from "./radar";
 
-renderRadar({
+new Radar({
   svg_id: "radar",
   width: 1450,
   height: 1000,
@@ -24,4 +24,4 @@ renderRadar({
   ],
   print_layout: true,
   entries: data,
-});
+}).render()
