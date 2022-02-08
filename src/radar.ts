@@ -34,6 +34,7 @@ export type Item = {
     label: string;
     active: boolean;
     moved: Moved;
+    link?: string;
 };
 
 export enum Quadrant {
@@ -220,6 +221,7 @@ class Dot implements Item {
     id: string;
     x: number;
     y: number
+    link?: string
 
     constructor(entry: Item) {
         this.label = entry.label;
@@ -227,6 +229,7 @@ class Dot implements Item {
         this.ring = entry.ring;
         this.moved = entry.moved;
         this.quadrant = entry.quadrant;
+        this.link = entry.link;
     }
 }
 
@@ -438,65 +441,66 @@ export class Radar {
 
         this.drawRings(gridGroup)
 
+        // remove - move to HTML
         // draw title and legend (only in print layout)
-        if (this.config.print_layout) {
-            // footer
-            radarGroup
-                .append("text")
-                .attr("transform", translate(this.footer_offset.x, this.footer_offset.y))
-                .text("▲ moved up     ▼ moved down")
-                .attr("xml:space", "preserve")
-                .style("font-size", "12px");
-
-            // legend
-            var legend = radarGroup.append("g");
-            for (var quadrant = 0; quadrant < 4; quadrant++) {
-                legend
-                    .append("text")
-                    .attr(
-                        "transform",
-                        translate(this.legend_offset[quadrant].x, this.legend_offset[quadrant].y - 45)
-                    )
-                    .text(this.config.quadrants[quadrant].name)
-                    .style("font-size", "18px");
-                for (var ring = 0; ring < 4; ring++) {
-                    legend
-                        .append("text")
-                        .attr("transform", this.legend_transform(segments, quadrant, ring))
-                        .text(this.config.rings[ring].name)
-                        .style("font-size", "14px")
-                        .style("font-weight", "700");
-                    legend
-                        .selectAll(".legend" + quadrant + ring)
-                        .data(segments[quadrant][ring])
-                        .enter()
-                        .append("a")
-                        .attr("href", function (d, i) {
-                            return d.link ? d.link : "#"; // stay on same page if no link was provided
-                        })
-                        .append("text")
-                        .attr("transform",  (d, i) => {
-                            return this.legend_transform(segments, quadrant, ring, i);
-                        })
-                        .attr("class", "legend" + quadrant + ring)
-                        .attr("id", function (d, i) {
-                            return "legendItem" + d.id;
-                        })
-                        .text(function (d, i) {
-                            return d.id + ". " + d.label;
-                        })
-                        .style("font-size", "14px")
-                        .on("mouseover", function (d) {
-                            showBubble(d);
-                            highlightLegendItem(d);
-                        })
-                        .on("mouseout", function (d) {
-                            hideBubble(d);
-                            unhighlightLegendItem(d);
-                        });
-                }
-            }
-        }
+        // if (this.config.print_layout) {
+        //     // footer
+        //     radarGroup
+        //         .append("text")
+        //         .attr("transform", translate(this.footer_offset.x, this.footer_offset.y))
+        //         .text("▲ moved up     ▼ moved down")
+        //         .attr("xml:space", "preserve")
+        //         .style("font-size", "12px");
+        //
+        //     // legend
+        //     var legend = radarGroup.append("g");
+        //     for (var quadrant = 0; quadrant < 4; quadrant++) {
+        //         legend
+        //             .append("text")
+        //             .attr(
+        //                 "transform",
+        //                 translate(this.legend_offset[quadrant].x, this.legend_offset[quadrant].y - 45)
+        //             )
+        //             .text(this.config.quadrants[quadrant].name)
+        //             .style("font-size", "18px");
+        //         for (var ring = 0; ring < 4; ring++) {
+        //             legend
+        //                 .append("text")
+        //                 .attr("transform", this.legend_transform(segments, quadrant, ring))
+        //                 .text(this.config.rings[ring].name)
+        //                 .style("font-size", "14px")
+        //                 .style("font-weight", "700");
+        //             legend
+        //                 .selectAll(".legend" + quadrant + ring)
+        //                 .data(segments[quadrant][ring])
+        //                 .enter()
+        //                 .append("a")
+        //                 .attr("href", function (d, i) {
+        //                     return d.link ? d.link : "#"; // stay on same page if no link was provided
+        //                 })
+        //                 .append("text")
+        //                 .attr("transform",  (d, i) => {
+        //                     return this.legend_transform(segments, quadrant, ring, i);
+        //                 })
+        //                 .attr("class", "legend" + quadrant + ring)
+        //                 .attr("id", function (d, i) {
+        //                     return "legendItem" + d.id;
+        //                 })
+        //                 .text(function (d, i) {
+        //                     return d.id + ". " + d.label;
+        //                 })
+        //                 .style("font-size", "14px")
+        //                 .on("mouseover", function (d) {
+        //                     showBubble(d);
+        //                     highlightLegendItem(d);
+        //                 })
+        //                 .on("mouseout", function (d) {
+        //                     hideBubble(d);
+        //                     unhighlightLegendItem(d);
+        //                 });
+        //         }
+        //     }
+        // }
 
         // layer for entries
         var rink = radarGroup.append("g").attr("id", "rink");
@@ -515,97 +519,85 @@ export class Radar {
         bubble.append("path").attr("d", "M 0,0 10,0 5,8 z").style("fill", "#676A6E");
 
         const showBubble = (d) => {
-            if (d.active || this.config.print_layout) {
-                var tooltip = d3.select("#bubble text").text(d.label);
-                var bbox = tooltip.node().getBBox();
-                d3.select("#bubble")
-                    .attr("transform", translate(d.x - bbox.width / 2, d.y - 16))
-                    .style("opacity", 0.8);
-                d3.select("#bubble rect")
-                    .attr("x", -5)
-                    .attr("y", -bbox.height)
-                    .attr("width", bbox.width + 10)
-                    .attr("height", bbox.height + 4);
-                d3.select("#bubble path").attr(
-                    "transform",
-                    translate(bbox.width / 2 - 5, 3)
-                );
-            }
+            const tooltip = d3.select("#bubble text").text(d.label);
+            const bbox = tooltip.node().getBBox();
+
+            d3.select("#bubble")
+                .attr("transform", translate(d.x - bbox.width / 2, d.y - 16))
+                .style("opacity", 0.8);
+            d3.select("#bubble rect")
+                .attr("x", -5)
+                .attr("y", -bbox.height)
+                .attr("width", bbox.width + 10)
+                .attr("height", bbox.height + 4);
+            d3.select("#bubble path").attr(
+                "transform",
+                translate(bbox.width / 2 - 5, 3)
+            );
         }
 
         function hideBubble(d) {
-            var bubble = d3
-                .select("#bubble")
+            d3.select("#bubble")
                 .attr("transform", translate(0, 0))
                 .style("opacity", 0);
         }
 
-        function highlightLegendItem(d) {
-            var legendItem = document.getElementById("legendItem" + d.id);
-            legendItem.setAttribute("filter", "url(#solid)");
-            legendItem.setAttribute("fill", "#F0EEEA");
-        }
-
-        function unhighlightLegendItem(d) {
-            var legendItem = document.getElementById("legendItem" + d.id);
-            legendItem.removeAttribute("filter");
-            legendItem.removeAttribute("fill");
-        }
-
         // draw blips on radar
-        var blips = rink
+        const blips = rink
             .selectAll(".blip")
             .data(this.dots)
             .enter()
             .append("g")
             .attr("class", "blip")
-            .attr("transform",  (d, i) => {
+            .attr("transform", (d, i) => {
                 return this.legend_transform(segments, d.quadrant, d.ring, i);
             })
+            // todo - run events
             .on("mouseover", function (d) {
                 showBubble(d);
-                highlightLegendItem(d);
+                console.log('mouse over')
             })
             .on("mouseout", function (d) {
                 hideBubble(d);
-                unhighlightLegendItem(d);
+                console.log('mouse out')
             });
 
         const config = this.config
 
         // this.configure each blip
-        blips.each(function (d) {
-            var blip = d3.select(this);
+        blips.each((dot, index, blipsArr) => {
+            const blipElement = blipsArr[index];
+            let blip: d3.Selection<SVGElement | HTMLAnchorElement, unknown, null, undefined> = d3.select(blipElement);
 
-            // blip link
-            if (!config.print_layout && d.active && d.hasOwnProperty("link")) {
-                blip = blip.append("a").attr("xlink:href", d.link);
+            if (dot.active && dot.hasOwnProperty("link")) {
+                blip = blip.append("a").attr("xlink:href", dot.link).attr('target', '_blank');
             }
 
             // blip shape
-            if (d.moved > 0) {
+            if (dot.moved > 0) {
                 blip
                     .append("path")
                     .attr("d", "M -11,5 11,5 0,-13 z") // triangle pointing up
-                    .style("fill", d.color);
-            } else if (d.moved < 0) {
+                    .style("fill", dot.color);
+            } else if (dot.moved < 0) {
                 blip
                     .append("path")
                     .attr("d", "M -11,-5 11,-5 0,13 z") // triangle pointing down
-                    .style("fill", d.color);
+                    .style("fill", dot.color);
             } else {
-                blip.append("circle").attr("r", 9).attr("fill", d.color);
+                blip.append("circle").attr("r", 9).attr("fill", dot.color);
             }
 
-            // blip text
-            if (d.active || config.print_layout) {
-                var blip_text = config.print_layout ? d.id : d.label.match(/[a-z]/i);
+            if (dot.active) {
+                const blip_text = dot.label.match(/[a-z]/i);
+
+
                 blip
                     .append("text")
-                    .text(blip_text)
+                    .text(blip_text[0])
                     .attr("y", 3)
                     .attr("text-anchor", "middle")
-                    .style("fill", config.rings[d.ring].textColor)
+                    .style("fill", config.rings[dot.ring].textColor)
                     .style("font-size", function (d) {
                         return blip_text.length > 2 ? "9px" : "11px";
                     })
@@ -623,7 +615,7 @@ export class Radar {
 
         // distribute blips, while avoiding collisions
         d3.forceSimulation()
-            .nodes(this.config.entries)
+            .nodes(this.dots)
             .velocityDecay(0.19) // magic number (found by experimentation)
             .force("collision", d3.forceCollide().radius(12).strength(0.85))
             .on("tick", ticked);

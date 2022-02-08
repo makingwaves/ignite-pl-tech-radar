@@ -35,6 +35,7 @@ export const data: Item[] = [
     label: "Node.js",
     active: true,
     moved: Moved.None,
+    link: 'https://nodejs.org/en/',
   },
   {
     quadrant: Quadrant.TopLeft,
