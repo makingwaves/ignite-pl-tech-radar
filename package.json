@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "parcel",
-    "build": "parcel build"
+    "build": "parcel build",
+    "prettier": "prettier --write src"
   },
   "targets": {
     "githubPages": {
