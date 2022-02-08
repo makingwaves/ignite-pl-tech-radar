@@ -271,4 +271,11 @@ export const data = [
         "active": true,
         "moved": Moved.None
     },
+    {
+        "quadrant": Quadrant.TopLeft,
+        "ring": Ring.Assess,
+        "label": "Medusa.js",
+        "active": true,
+        "moved": Moved.None
+    },
 ]
