@@ -23,7 +23,8 @@
   },
   "devDependencies": {
     "parcel": "^2.2.1",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "@types/d3": "4.11.0"
   },
   "author": "",
   "license": "ISC"

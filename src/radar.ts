@@ -245,6 +245,7 @@ function translate(x, y) {
     return "translate(" + x + "," + y + ")";
 }
 
+
 export class Radar {
     readonly randomGen = new RandomGenerator()
     readonly quadrants: QuadrantCoords[] = [
@@ -274,6 +275,22 @@ export class Radar {
 
     constructor(private config: RadarConfig) {
         this.createDots()
+    }
+
+    /**
+     * @deprecated will not need, legend will be removed
+     */
+    legend_transform(segments: SegmentedDots, quadrant: number, ring: number, index: null | number = null) {
+        var dx = ring < 2 ? 0 : 120;
+        var dy = index == null ? -16 : index * 16;
+        if (ring % 2 === 1) {
+            dy = dy + 48 + segments[quadrant][ring - 1].length * 12;
+        }
+
+        return translate(
+            this.legend_offset[quadrant].x + dx,
+            this.legend_offset[quadrant].y + dy
+        );
     }
 
     createDots() {
@@ -313,13 +330,77 @@ export class Radar {
         })
 
     }
-     getQuadrantViewbox = (quadrant: number) => {
+
+    getQuadrantViewbox = (quadrant: number) => {
         return [
             Math.max(0, this.quadrants[quadrant].factor_x * 400) - 420,
             Math.max(0, this.quadrants[quadrant].factor_y * 400) - 420,
             440,
             440,
         ].join(" ");
+    }
+
+    createRootElement() {
+        return d3
+            .select("svg#" + this.config.svg_id)
+            .style("background-color", this.config.colors.background)
+            .attr("width", this.config.width)
+            .attr("height", this.config.height);
+    }
+
+    createGrid(radarEl: d3.Selection<SVGElement, unknown, HTMLElement, any>) {
+        const gridGroup = radarEl.append('g')
+
+        const verticalLine = gridGroup
+            .append("line")
+            .attr("x1", 0)
+            .attr("y1", -400)
+            .attr("x2", 0)
+            .attr("y2", 400)
+            .style("stroke", this.config.colors.grid)
+            .style("stroke-width", 1);
+
+        const horizonalLine = gridGroup
+            .append("line")
+            .attr("x1", -400)
+            .attr("y1", 0)
+            .attr("x2", 400)
+            .attr("y2", 0)
+            .style("stroke", this.config.colors.grid)
+            .style("stroke-width", 1);
+
+
+        return {
+            gridGroup, horizonalLine, verticalLine
+        }
+    }
+
+
+    drawRings(gridGroup: d3.Selection<SVGElement, unknown, HTMLElement, any>) {
+        this.rings.forEach((ring, index) => {
+            gridGroup
+                .append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", ring.radius)
+                .style("fill", "none")
+                .style("stroke", this.config.colors.grid)
+                .style("stroke-width", 1);
+
+            if (this.config.print_layout) {
+                gridGroup
+                    .append("text")
+                    .text(this.config.rings[index].name) // todo - move ring name to RingCoords and change it to generic Ring
+                    .attr("y", -ring.radius + 62)
+                    .attr("text-anchor", "middle")
+                    .style("fill", "#CECFD2")
+                    .style("font-size", "42px")
+                    .style("opacity", "0.5")
+                    .style("font-weight", "700")
+                    .style("pointer-events", "none")
+                    .style("user-select", "none");
+            }
+        })
     }
 
     render() {
@@ -331,43 +412,20 @@ export class Radar {
 
         this.setDotsLabels(segments)
 
+        const rootSvgElement = this.createRootElement()
+        const radarGroup = rootSvgElement.append("g");
 
-
-        var svg = d3
-            .select("svg#" + this.config.svg_id)
-            .style("background-color", this.config.colors.background)
-            .attr("width", this.config.width)
-            .attr("height", this.config.height);
-
-        var radar = svg.append("g");
         if ("zoomed_quadrant" in this.config) {
-            svg.attr("viewBox", this.getQuadrantViewbox(this.config.zoomed_quadrant));
+            rootSvgElement.attr("viewBox", this.getQuadrantViewbox(this.config.zoomed_quadrant));
         } else {
-            radar.attr("transform", translate(this.config.width / 2, this.config.height / 2));
+            radarGroup.attr("transform", translate(this.config.width / 2, this.config.height / 2));
         }
 
-        var grid = radar.append("g");
+        const {gridGroup, horizonalLine, verticalLine} = this.createGrid(radarGroup)
 
-        grid
-            .append("line")
-            .attr("x1", 0)
-            .attr("y1", -400)
-            .attr("x2", 0)
-            .attr("y2", 400)
-            .style("stroke", this.config.colors.grid)
-            .style("stroke-width", 1);
-        grid
-            .append("line")
-            .attr("x1", -400)
-            .attr("y1", 0)
-            .attr("x2", 400)
-            .attr("y2", 0)
-            .style("stroke", this.config.colors.grid)
-            .style("stroke-width", 1);
 
-        // background color. Usage `.attr("filter", "url(#solid)")`
-        // SOURCE: https://stackoverflow.com/a/31013492/2609980
-        var defs = grid.append("defs");
+        // remove - this is legend background
+        var defs = gridGroup.append("defs");
         var filter = defs
             .append("filter")
             .attr("x", 0)
@@ -378,48 +436,12 @@ export class Radar {
         filter.append("feFlood").attr("flood-color", "#676A6E");
         filter.append("feComposite").attr("in", "SourceGraphic");
 
-        // draw rings
-        for (var i = 0; i < this.rings.length; i++) {
-            grid
-                .append("circle")
-                .attr("cx", 0)
-                .attr("cy", 0)
-                .attr("r", this.rings[i].radius)
-                .style("fill", "none")
-                .style("stroke", this.config.colors.grid)
-                .style("stroke-width", 1);
-            if (this.config.print_layout) {
-                grid
-                    .append("text")
-                    .text(this.config.rings[i].name)
-                    .attr("y", -this.rings[i].radius + 62)
-                    .attr("text-anchor", "middle")
-                    .style("fill", "#CECFD2")
-                    .style("font-size", "42px")
-                    .style("opacity", "0.5")
-                    .style("font-weight", "700")
-                    .style("pointer-events", "none")
-                    .style("user-select", "none");
-            }
-        }
-
-        const legend_transform = (quadrant, ring, index = null) => {
-            var dx = ring < 2 ? 0 : 120;
-            var dy = index == null ? -16 : index * 16;
-            if (ring % 2 === 1) {
-                dy = dy + 48 + segments[quadrant][ring - 1].length * 12;
-            }
-
-            return translate(
-                this.legend_offset[quadrant].x + dx,
-                this.legend_offset[quadrant].y + dy
-            );
-        }
+        this.drawRings(gridGroup)
 
         // draw title and legend (only in print layout)
         if (this.config.print_layout) {
             // footer
-            radar
+            radarGroup
                 .append("text")
                 .attr("transform", translate(this.footer_offset.x, this.footer_offset.y))
                 .text("▲ moved up     ▼ moved down")
@@ -427,7 +449,7 @@ export class Radar {
                 .style("font-size", "12px");
 
             // legend
-            var legend = radar.append("g");
+            var legend = radarGroup.append("g");
             for (var quadrant = 0; quadrant < 4; quadrant++) {
                 legend
                     .append("text")
@@ -440,7 +462,7 @@ export class Radar {
                 for (var ring = 0; ring < 4; ring++) {
                     legend
                         .append("text")
-                        .attr("transform", legend_transform(quadrant, ring))
+                        .attr("transform", this.legend_transform(segments, quadrant, ring))
                         .text(this.config.rings[ring].name)
                         .style("font-size", "14px")
                         .style("font-weight", "700");
@@ -453,8 +475,8 @@ export class Radar {
                             return d.link ? d.link : "#"; // stay on same page if no link was provided
                         })
                         .append("text")
-                        .attr("transform", function (d, i) {
-                            return legend_transform(quadrant, ring, i);
+                        .attr("transform",  (d, i) => {
+                            return this.legend_transform(segments, quadrant, ring, i);
                         })
                         .attr("class", "legend" + quadrant + ring)
                         .attr("id", function (d, i) {
@@ -477,10 +499,10 @@ export class Radar {
         }
 
         // layer for entries
-        var rink = radar.append("g").attr("id", "rink");
+        var rink = radarGroup.append("g").attr("id", "rink");
 
         // rollover bubble (on top of everything else)
-        var bubble = radar
+        var bubble = radarGroup
             .append("g")
             .attr("id", "bubble")
             .attr("x", 0)
@@ -537,8 +559,8 @@ export class Radar {
             .enter()
             .append("g")
             .attr("class", "blip")
-            .attr("transform", function (d, i) {
-                return legend_transform(d.quadrant, d.ring, i);
+            .attr("transform",  (d, i) => {
+                return this.legend_transform(segments, d.quadrant, d.ring, i);
             })
             .on("mouseover", function (d) {
                 showBubble(d);
