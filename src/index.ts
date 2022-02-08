@@ -1,7 +1,9 @@
-import { data } from "./data";
+import { data, quadrants, rings } from "./data";
 import { Radar } from "./radar";
+import { RadarConfig } from "./radar-config";
+import { Legend } from "./legend";
 
-new Radar({
+const radar = new Radar({
   svg_id: "radar",
   width: 800,
   height: 800,
@@ -10,18 +12,21 @@ new Radar({
     grid: "#CECFD2",
     inactive: "#ddd",
   },
-  quadrants: [
-    { name: "Languages & Frameworks" },
-    { name: "TODO" },
-    { name: "TODO" },
-    { name: "TODO" },
-  ],
-  rings: [
-    { name: "ADOPT", color: "#EB4646", textColor: "#DBD1C7" },
-    { name: "TRIAL", color: "#CAE0DC", textColor: "#001932" },
-    { name: "ASSESS", color: "#DBD1C7", textColor: "#001932" },
-    { name: "HOLD", color: "#001932", textColor: "#DBD1C7" },
-  ],
-  print_layout: true,
+  quadrants,
+  rings,
   entries: data,
-}).render();
+});
+
+const legend = new Legend({
+  quadrants,
+  rings,
+  data,
+  rootElement: document.querySelector("#legend"),
+});
+
+legend.render();
+
+radar.onDotMouseOver((dot) => legend.highlightByLabel(dot.label));
+radar.onDotMouseOut((dot) => legend.removeHighlightByLabel(dot.label));
+
+radar.render();

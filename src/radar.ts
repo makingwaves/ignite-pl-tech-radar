@@ -14,7 +14,7 @@ const createSegmentedArray = (): SegmentedDots => {
     [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
     [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
     [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
-    [dotsArr(), dotsArr(), dotsArr(), dotsArr()]
+    [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
   ];
 };
 
@@ -28,31 +28,24 @@ export class Radar {
     { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1 },
     { radial_min: 0.5, radial_max: 1, factor_x: -1, factor_y: 1 },
     { radial_min: -1, radial_max: -0.5, factor_x: -1, factor_y: -1 },
-    { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 }
+    { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 },
   ];
   readonly rings: RingCoords[] = [
     { radius: 130 },
     { radius: 220 },
     { radius: 310 },
-    { radius: 400 }
+    { radius: 400 },
   ];
-  readonly footer_offset = { x: -675, y: 420 } as const;
-  /**
-   * @deprecated
-   */
-  readonly legend_offset = [
-    { x: 450, y: 90 },
-    { x: -675, y: 90 },
-    { x: -675, y: -310 },
-    { x: 450, y: -310 }
-  ] as const;
 
   dots: Dot[];
+  eventHandlers = {
+    onDotMouseOver: (dot: Dot) => {},
+    onDotMouseOut: (dot: Dot) => {},
+  };
 
   constructor(private config: RadarConfig) {
     this.createDots();
   }
-
 
   createDots() {
     this.dots = this.config.entries.map((entryItem) => {
@@ -84,7 +77,7 @@ export class Radar {
       for (let ring = 0; ring < 4; ring++) {
         const dotsInSegment = segments[quadrant][ring];
 
-        dotsInSegment.sort(function(a, b) {
+        dotsInSegment.sort(function (a, b) {
           return a.label.localeCompare(b.label);
         });
 
@@ -100,7 +93,7 @@ export class Radar {
       Math.max(0, this.quadrants[quadrant].factor_x * 400) - 420,
       Math.max(0, this.quadrants[quadrant].factor_y * 400) - 420,
       440,
-      440
+      440,
     ].join(" ");
   };
 
@@ -136,7 +129,7 @@ export class Radar {
     return {
       gridGroup,
       horizonalLine,
-      verticalLine
+      verticalLine,
     };
   }
 
@@ -192,20 +185,7 @@ export class Radar {
     const { gridGroup, horizonalLine, verticalLine } =
       this.createGrid(radarGroup);
 
-    // remove - this is legend background
-    var defs = gridGroup.append("defs");
-    var filter = defs
-      .append("filter")
-      .attr("x", 0)
-      .attr("y", 0)
-      .attr("width", 1)
-      .attr("height", 1)
-      .attr("id", "solid");
-    filter.append("feFlood").attr("flood-color", "#676A6E");
-    filter.append("feComposite").attr("in", "SourceGraphic");
-
     this.drawRings(gridGroup);
-
 
     // layer for entries
     var rink = radarGroup.append("g").attr("id", "rink");
@@ -258,13 +238,13 @@ export class Radar {
       .append("g")
       .attr("class", "blip")
       // todo - run events
-      .on("mouseover", function(d) {
-        showBubble(d);
-        console.log("mouse over");
+      .on("mouseover", (dot: Dot) => {
+        this.eventHandlers.onDotMouseOver(dot);
+        showBubble(dot);
       })
-      .on("mouseout", function(d) {
-        hideBubble(d);
-        console.log("mouse out");
+      .on("mouseout", (dot: Dot) => {
+        hideBubble(dot);
+        this.eventHandlers.onDotMouseOut(dot);
       });
 
     const config = this.config;
@@ -272,10 +252,12 @@ export class Radar {
     // this.configure each blip
     blips.each((dot, index, blipsArr) => {
       const blipElement = blipsArr[index];
-      let blip: d3.Selection<SVGElement | HTMLAnchorElement,
+      let blip: d3.Selection<
+        SVGElement | HTMLAnchorElement,
         unknown,
         null,
-        undefined> = d3.select(blipElement);
+        undefined
+      > = d3.select(blipElement);
 
       if (dot.active && dot.hasOwnProperty("link")) {
         blip = blip
@@ -308,7 +290,7 @@ export class Radar {
           .attr("y", 3)
           .attr("text-anchor", "middle")
           .style("fill", config.rings[dot.ring].textColor)
-          .style("font-size", function(d) {
+          .style("font-size", function (d) {
             return blip_text.length > 2 ? "9px" : "11px";
           })
           .style("pointer-events", "none")
@@ -318,7 +300,7 @@ export class Radar {
 
     // make sure that blips stay inside their segment
     function ticked() {
-      blips.attr("transform", function(d) {
+      blips.attr("transform", function (d) {
         return translate(d.segment.clipX(d), d.segment.clipY(d));
       });
     }
@@ -329,5 +311,16 @@ export class Radar {
       .velocityDecay(0.19) // magic number (found by experimentation)
       .force("collision", d3.forceCollide().radius(12).strength(0.85))
       .on("tick", ticked);
+  }
+
+  onDotMouseOver(callback: (dot: Dot) => void) {
+    this.eventHandlers.onDotMouseOver = callback;
+
+    return this;
+  }
+  onDotMouseOut(callback: (dot: Dot) => void) {
+    this.eventHandlers.onDotMouseOut = callback;
+
+    return this;
   }
 }

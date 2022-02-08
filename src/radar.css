@@ -44,3 +44,40 @@ header {
 h1 {
   font-weight: 400;
 }
+
+#legend {
+  width: 400px;
+  margin-right: 20px;
+  height: calc(100vh - 200px);
+  overflow: auto;
+}
+
+.quadrant-list {
+  margin:0;
+  padding:0;
+}
+
+.quadrant-item h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.entry-item{
+  display: block;
+  line-height: 1.5;
+  transition: 0.3s;
+}
+
+.ring-wrapper {
+  border-left: 3px solid;
+  padding: 10px 0 10px 10px;
+  margin: 10px 0;
+}
+
+.ring-wrapper h3 {
+  margin: 0 0 10px 0;
+}
+
+.item-highlight {
+  transform: translateX(10px);
+}

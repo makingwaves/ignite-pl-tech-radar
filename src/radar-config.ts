@@ -1,8 +1,14 @@
 export type QuadrantConfig = {
   name: string;
+  index: Quadrant;
 };
 
-export type RingConfig = { name: string; color: string; textColor: string };
+export type RingConfig = {
+  name: string;
+  color: string;
+  textColor: string;
+  index: Ring;
+};
 
 export type EntryItem = {
   quadrant: Quadrant;
