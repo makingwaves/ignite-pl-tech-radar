@@ -1,6 +1,6 @@
-import { Item, Quadrant, Ring, Moved } from "./radar";
+import { EntryItem, Moved, Quadrant, Ring } from "./radar-config";
 
-export const data: Item[] = [
+export const data: EntryItem[] = [
   {
     quadrant: Quadrant.BottomRight,
     ring: Ring.Adopt,

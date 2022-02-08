@@ -3,60 +3,7 @@ import { RandomGenerator } from "./random-generator";
 import { Point, Polar, QuadrantCoords, RingCoords } from "./coords";
 import { Dot } from "./dot";
 import { DotPositioner } from "./dot-positioner";
-
-type QuadrantConfig = {
-  name: string;
-};
-
-type RingConfig = { name: string; color: string; textColor: string };
-
-export type Item = {
-  quadrant: Quadrant;
-  ring: Ring;
-  label: string;
-  active: boolean;
-  moved: Moved;
-  link?: string;
-};
-
-export enum Quadrant {
-  BottomRight = 0,
-  BottomLeft = 1,
-  TopLeft = 2,
-  TopRight = 3,
-}
-
-export enum Moved {
-  None = 0,
-  In = 1,
-  Out = -1,
-}
-
-export enum Ring {
-  Adopt = 0,
-  Trial = 1,
-  Assess = 2,
-  Hold = 3,
-}
-
-export type RadarConfig = {
-  svg_id: string;
-  width: number;
-  height: number;
-  colors: {
-    background: string;
-    grid: string;
-    inactive: string;
-  };
-  quadrants: [QuadrantConfig, QuadrantConfig, QuadrantConfig, QuadrantConfig];
-  rings: [RingConfig, RingConfig, RingConfig, RingConfig];
-  entries: Item[];
-  /**
-   * @deprecated
-   */
-  print_layout: boolean;
-  zoomed_quadrant?: number;
-};
+import { RadarConfig } from "./radar-config";
 
 type SegmentedDots = Array<Array<Dot[]>>;
 
@@ -67,7 +14,7 @@ const createSegmentedArray = (): SegmentedDots => {
     [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
     [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
     [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
-    [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
+    [dotsArr(), dotsArr(), dotsArr(), dotsArr()]
   ];
 };
 
@@ -81,13 +28,13 @@ export class Radar {
     { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1 },
     { radial_min: 0.5, radial_max: 1, factor_x: -1, factor_y: 1 },
     { radial_min: -1, radial_max: -0.5, factor_x: -1, factor_y: -1 },
-    { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 },
+    { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 }
   ];
   readonly rings: RingCoords[] = [
     { radius: 130 },
     { radius: 220 },
     { radius: 310 },
-    { radius: 400 },
+    { radius: 400 }
   ];
   readonly footer_offset = { x: -675, y: 420 } as const;
   /**
@@ -97,7 +44,7 @@ export class Radar {
     { x: 450, y: 90 },
     { x: -675, y: 90 },
     { x: -675, y: -310 },
-    { x: 450, y: -310 },
+    { x: 450, y: -310 }
   ] as const;
 
   dots: Dot[];
@@ -106,26 +53,6 @@ export class Radar {
     this.createDots();
   }
 
-  /**
-   * @deprecated will not need, legend will be removed
-   */
-  legend_transform(
-    segments: SegmentedDots,
-    quadrant: number,
-    ring: number,
-    index: null | number = null
-  ) {
-    var dx = ring < 2 ? 0 : 120;
-    var dy = index == null ? -16 : index * 16;
-    if (ring % 2 === 1) {
-      dy = dy + 48 + segments[quadrant][ring - 1].length * 12;
-    }
-
-    return translate(
-      this.legend_offset[quadrant].x + dx,
-      this.legend_offset[quadrant].y + dy
-    );
-  }
 
   createDots() {
     this.dots = this.config.entries.map((entryItem) => {
@@ -157,7 +84,7 @@ export class Radar {
       for (let ring = 0; ring < 4; ring++) {
         const dotsInSegment = segments[quadrant][ring];
 
-        dotsInSegment.sort(function (a, b) {
+        dotsInSegment.sort(function(a, b) {
           return a.label.localeCompare(b.label);
         });
 
@@ -173,7 +100,7 @@ export class Radar {
       Math.max(0, this.quadrants[quadrant].factor_x * 400) - 420,
       Math.max(0, this.quadrants[quadrant].factor_y * 400) - 420,
       440,
-      440,
+      440
     ].join(" ");
   };
 
@@ -209,7 +136,7 @@ export class Radar {
     return {
       gridGroup,
       horizonalLine,
-      verticalLine,
+      verticalLine
     };
   }
 
@@ -224,19 +151,17 @@ export class Radar {
         .style("stroke", this.config.colors.grid)
         .style("stroke-width", 1);
 
-      if (this.config.print_layout) {
-        gridGroup
-          .append("text")
-          .text(this.config.rings[index].name) // todo - move ring name to RingCoords and change it to generic Ring
-          .attr("y", -ring.radius + 62)
-          .attr("text-anchor", "middle")
-          .style("fill", "#CECFD2")
-          .style("font-size", "42px")
-          .style("opacity", "0.5")
-          .style("font-weight", "700")
-          .style("pointer-events", "none")
-          .style("user-select", "none");
-      }
+      gridGroup
+        .append("text")
+        .text(this.config.rings[index].name) // todo - move ring name to RingCoords and change it to generic Ring
+        .attr("y", -ring.radius + 62)
+        .attr("text-anchor", "middle")
+        .style("fill", "#CECFD2")
+        .style("font-size", "42px")
+        .style("opacity", "0.5")
+        .style("font-weight", "700")
+        .style("pointer-events", "none")
+        .style("user-select", "none");
     });
   }
 
@@ -281,66 +206,6 @@ export class Radar {
 
     this.drawRings(gridGroup);
 
-    // remove - move to HTML
-    // draw title and legend (only in print layout)
-    // if (this.config.print_layout) {
-    //     // footer
-    //     radarGroup
-    //         .append("text")
-    //         .attr("transform", translate(this.footer_offset.x, this.footer_offset.y))
-    //         .text("▲ moved up     ▼ moved down")
-    //         .attr("xml:space", "preserve")
-    //         .style("font-size", "12px");
-    //
-    //     // legend
-    //     var legend = radarGroup.append("g");
-    //     for (var quadrant = 0; quadrant < 4; quadrant++) {
-    //         legend
-    //             .append("text")
-    //             .attr(
-    //                 "transform",
-    //                 translate(this.legend_offset[quadrant].x, this.legend_offset[quadrant].y - 45)
-    //             )
-    //             .text(this.config.quadrants[quadrant].name)
-    //             .style("font-size", "18px");
-    //         for (var ring = 0; ring < 4; ring++) {
-    //             legend
-    //                 .append("text")
-    //                 .attr("transform", this.legend_transform(segments, quadrant, ring))
-    //                 .text(this.config.rings[ring].name)
-    //                 .style("font-size", "14px")
-    //                 .style("font-weight", "700");
-    //             legend
-    //                 .selectAll(".legend" + quadrant + ring)
-    //                 .data(segments[quadrant][ring])
-    //                 .enter()
-    //                 .append("a")
-    //                 .attr("href", function (d, i) {
-    //                     return d.link ? d.link : "#"; // stay on same page if no link was provided
-    //                 })
-    //                 .append("text")
-    //                 .attr("transform",  (d, i) => {
-    //                     return this.legend_transform(segments, quadrant, ring, i);
-    //                 })
-    //                 .attr("class", "legend" + quadrant + ring)
-    //                 .attr("id", function (d, i) {
-    //                     return "legendItem" + d.id;
-    //                 })
-    //                 .text(function (d, i) {
-    //                     return d.id + ". " + d.label;
-    //                 })
-    //                 .style("font-size", "14px")
-    //                 .on("mouseover", function (d) {
-    //                     showBubble(d);
-    //                     highlightLegendItem(d);
-    //                 })
-    //                 .on("mouseout", function (d) {
-    //                     hideBubble(d);
-    //                     unhighlightLegendItem(d);
-    //                 });
-    //         }
-    //     }
-    // }
 
     // layer for entries
     var rink = radarGroup.append("g").attr("id", "rink");
@@ -392,15 +257,12 @@ export class Radar {
       .enter()
       .append("g")
       .attr("class", "blip")
-      .attr("transform", (d, i) => {
-        return this.legend_transform(segments, d.quadrant, d.ring, i);
-      })
       // todo - run events
-      .on("mouseover", function (d) {
+      .on("mouseover", function(d) {
         showBubble(d);
         console.log("mouse over");
       })
-      .on("mouseout", function (d) {
+      .on("mouseout", function(d) {
         hideBubble(d);
         console.log("mouse out");
       });
@@ -410,12 +272,10 @@ export class Radar {
     // this.configure each blip
     blips.each((dot, index, blipsArr) => {
       const blipElement = blipsArr[index];
-      let blip: d3.Selection<
-        SVGElement | HTMLAnchorElement,
+      let blip: d3.Selection<SVGElement | HTMLAnchorElement,
         unknown,
         null,
-        undefined
-      > = d3.select(blipElement);
+        undefined> = d3.select(blipElement);
 
       if (dot.active && dot.hasOwnProperty("link")) {
         blip = blip
@@ -448,7 +308,7 @@ export class Radar {
           .attr("y", 3)
           .attr("text-anchor", "middle")
           .style("fill", config.rings[dot.ring].textColor)
-          .style("font-size", function (d) {
+          .style("font-size", function(d) {
             return blip_text.length > 2 ? "9px" : "11px";
           })
           .style("pointer-events", "none")
@@ -458,7 +318,7 @@ export class Radar {
 
     // make sure that blips stay inside their segment
     function ticked() {
-      blips.attr("transform", function (d) {
+      blips.attr("transform", function(d) {
         return translate(d.segment.clipX(d), d.segment.clipY(d));
       });
     }

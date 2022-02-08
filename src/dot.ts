@@ -1,8 +1,8 @@
-import { Item, Moved, Quadrant, Ring } from "./radar";
+import { EntryItem, Moved, Quadrant, Ring } from "./radar";
 import { Point } from "./coords";
 import { DotPositioner } from "./dot-positioner";
 
-export class Dot implements Item {
+export class Dot implements EntryItem {
   ring: Ring;
   quadrant: Quadrant;
   moved: Moved;
@@ -16,7 +16,7 @@ export class Dot implements Item {
   y: number;
   link?: string;
 
-  constructor(entry: Item) {
+  constructor(entry: EntryItem) {
     this.label = entry.label;
     this.active = entry.active;
     this.ring = entry.ring;
