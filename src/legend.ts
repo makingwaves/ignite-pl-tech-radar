@@ -74,4 +74,14 @@ export class Legend {
       .querySelector(`[data-label="${label}"]`)
       .classList.remove("item-highlight");
   }
+
+  onMouseOver(cb: (entry: EntryItem) => void) {
+    document.querySelectorAll(".entry-item").forEach((el: HTMLSpanElement) =>
+      el.addEventListener("mouseover", (e) => {
+        cb(this.config.data.find((item) => item.label === el.dataset.label));
+      })
+    );
+  }
+
+  onMouseOut(cb: () => void) {}
 }

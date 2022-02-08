@@ -47,7 +47,7 @@ export class Radar {
     this.createDots();
   }
 
-  createDots() {
+  private createDots() {
     this.dots = this.config.entries.map((entryItem) => {
       const dot = new Dot(entryItem);
 
@@ -69,7 +69,7 @@ export class Radar {
     });
   }
 
-  setDotsLabels(segments: SegmentedDots) {
+  private setDotsLabels(segments: SegmentedDots) {
     let id = 1;
     const quadrantsOrdered = [2, 3, 1, 0];
 
@@ -88,7 +88,7 @@ export class Radar {
     });
   }
 
-  getQuadrantViewbox = (quadrant: number) => {
+  private getQuadrantViewbox = (quadrant: number) => {
     return [
       Math.max(0, this.quadrants[quadrant].factor_x * 400) - 420,
       Math.max(0, this.quadrants[quadrant].factor_y * 400) - 420,
@@ -97,7 +97,7 @@ export class Radar {
     ].join(" ");
   };
 
-  createRootElement() {
+  private createRootElement() {
     return d3
       .select("svg#" + this.config.svg_id)
       .style("background-color", this.config.colors.background)
@@ -105,7 +105,9 @@ export class Radar {
       .attr("height", this.config.height);
   }
 
-  createGrid(radarEl: d3.Selection<SVGElement, unknown, HTMLElement, any>) {
+  private createGrid(
+    radarEl: d3.Selection<SVGElement, unknown, HTMLElement, any>
+  ) {
     const gridGroup = radarEl.append("g");
 
     const verticalLine = gridGroup
@@ -133,7 +135,31 @@ export class Radar {
     };
   }
 
-  drawRings(gridGroup: d3.Selection<SVGElement, unknown, HTMLElement, any>) {
+  private showBubble(d: Dot) {
+    const tooltip = d3.select("#bubble text").text(d.label);
+    const bbox = (tooltip.node() as SVGGraphicsElement).getBBox();
+
+    d3.select("#bubble")
+      .attr("transform", translate(d.x - bbox.width / 2, d.y - 16))
+      .style("opacity", 0.8);
+    d3.select("#bubble rect")
+      .attr("x", -5)
+      .attr("y", -bbox.height)
+      .attr("width", bbox.width + 10)
+      .attr("height", bbox.height + 4);
+    d3.select("#bubble path").attr(
+      "transform",
+      translate(bbox.width / 2 - 5, 3)
+    );
+  }
+
+  hideBubble() {
+    d3.select("#bubble").attr("transform", translate(0, 0)).style("opacity", 0);
+  }
+
+  private drawRings(
+    gridGroup: d3.Selection<SVGElement, unknown, HTMLElement, any>
+  ) {
     this.rings.forEach((ring, index) => {
       gridGroup
         .append("circle")
@@ -182,8 +208,7 @@ export class Radar {
       );
     }
 
-    const { gridGroup, horizonalLine, verticalLine } =
-      this.createGrid(radarGroup);
+    const { gridGroup } = this.createGrid(radarGroup);
 
     this.drawRings(gridGroup);
 
@@ -206,30 +231,6 @@ export class Radar {
       .attr("d", "M 0,0 10,0 5,8 z")
       .style("fill", "#676A6E");
 
-    const showBubble = (d) => {
-      const tooltip = d3.select("#bubble text").text(d.label);
-      const bbox = (tooltip.node() as SVGGraphicsElement).getBBox();
-
-      d3.select("#bubble")
-        .attr("transform", translate(d.x - bbox.width / 2, d.y - 16))
-        .style("opacity", 0.8);
-      d3.select("#bubble rect")
-        .attr("x", -5)
-        .attr("y", -bbox.height)
-        .attr("width", bbox.width + 10)
-        .attr("height", bbox.height + 4);
-      d3.select("#bubble path").attr(
-        "transform",
-        translate(bbox.width / 2 - 5, 3)
-      );
-    };
-
-    function hideBubble(d) {
-      d3.select("#bubble")
-        .attr("transform", translate(0, 0))
-        .style("opacity", 0);
-    }
-
     // draw blips on radar
     const blips = rink
       .selectAll(".blip")
@@ -237,13 +238,13 @@ export class Radar {
       .enter()
       .append("g")
       .attr("class", "blip")
-      // todo - run events
+      .attr("data-entry-label", (d) => d.label)
       .on("mouseover", (dot: Dot) => {
         this.eventHandlers.onDotMouseOver(dot);
-        showBubble(dot);
+        this.showBubble(dot);
       })
       .on("mouseout", (dot: Dot) => {
-        hideBubble(dot);
+        this.hideBubble();
         this.eventHandlers.onDotMouseOut(dot);
       });
 
@@ -282,17 +283,15 @@ export class Radar {
       }
 
       if (dot.active) {
-        const blip_text = dot.getLabelFirstLetter();
+        const label = dot.getLabelFirstLetter();
 
         blip
           .append("text")
-          .text(blip_text[0])
+          .text(label)
           .attr("y", 3)
           .attr("text-anchor", "middle")
           .style("fill", config.rings[dot.ring].textColor)
-          .style("font-size", function (d) {
-            return blip_text.length > 2 ? "9px" : "11px";
-          })
+          .style("font-size", "12px")
           .style("pointer-events", "none")
           .style("user-select", "none");
       }
@@ -322,5 +321,13 @@ export class Radar {
     this.eventHandlers.onDotMouseOut = callback;
 
     return this;
+  }
+
+  highlightDot(label: string) {
+    this.showBubble(this.dots.find((d) => d.label === label));
+  }
+
+  hideHighlightDot() {
+    this.hideBubble();
   }
 }

@@ -30,3 +30,7 @@ radar.onDotMouseOver((dot) => legend.highlightByLabel(dot.label));
 radar.onDotMouseOut((dot) => legend.removeHighlightByLabel(dot.label));
 
 radar.render();
+
+legend.onMouseOver((entry) => {
+  radar.highlightDot(entry.label);
+});

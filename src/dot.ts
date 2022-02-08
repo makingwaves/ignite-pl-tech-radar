@@ -1,6 +1,6 @@
-import { EntryItem, Moved, Quadrant, Ring } from "./radar";
 import { Point } from "./coords";
 import { DotPositioner } from "./dot-positioner";
+import { EntryItem, Moved, Quadrant, Ring } from "./radar-config";
 
 export class Dot implements EntryItem {
   ring: Ring;
@@ -26,6 +26,6 @@ export class Dot implements EntryItem {
   }
 
   getLabelFirstLetter() {
-    return this.label.match(/[a-z]/i);
+    return this.label.match(/[a-z]/i)[0];
   }
 }
