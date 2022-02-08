@@ -83,5 +83,11 @@ export class Legend {
     );
   }
 
-  onMouseOut(cb: () => void) {}
+  onMouseOut(cb: () => void) {
+    document.querySelectorAll(".entry-item").forEach((el: HTMLSpanElement) =>
+      el.addEventListener("mouseout", (e) => {
+        cb();
+      })
+    );
+  }
 }

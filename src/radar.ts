@@ -153,7 +153,7 @@ export class Radar {
     );
   }
 
-  hideBubble() {
+  private hideBubble() {
     d3.select("#bubble").attr("transform", translate(0, 0)).style("opacity", 0);
   }
 
@@ -212,11 +212,9 @@ export class Radar {
 
     this.drawRings(gridGroup);
 
-    // layer for entries
-    var rink = radarGroup.append("g").attr("id", "rink");
+    const rink = radarGroup.append("g").attr("id", "rink");
 
-    // rollover bubble (on top of everything else)
-    var bubble = radarGroup
+    const bubble = radarGroup
       .append("g")
       .attr("id", "bubble")
       .attr("x", 0)
@@ -224,12 +222,20 @@ export class Radar {
       .style("opacity", 0)
       .style("pointer-events", "none")
       .style("user-select", "none");
-    bubble.append("rect").attr("rx", 4).attr("ry", 4).style("fill", "#676A6E");
-    bubble.append("text").style("font-size", "10px").style("fill", "#F0EEEA");
+
+    bubble
+      .append("rect")
+      .attr("rx", 4)
+      .attr("ry", 4)
+      .style("fill", "#313131")
+      .attr("text-anchor", "middle");
+
+    bubble.append("text").style("font-size", "15px").style("fill", "#F0EEEA");
+
     bubble
       .append("path")
       .attr("d", "M 0,0 10,0 5,8 z")
-      .style("fill", "#676A6E");
+      .style("fill", "#313131");
 
     // draw blips on radar
     const blips = rink
@@ -279,10 +285,11 @@ export class Radar {
           .attr("d", "M -11,-5 11,-5 0,13 z") // triangle pointing down
           .style("fill", dot.color);
       } else {
-        blip.append("circle").attr("r", 9).attr("fill", dot.color);
+        blip.append("circle").attr("r", 12).attr("fill", dot.color);
       }
 
-      if (dot.active) {
+      // show labels on dots?
+      if (false) {
         const label = dot.getLabelFirstLetter();
 
         blip
@@ -308,7 +315,7 @@ export class Radar {
     d3.forceSimulation()
       .nodes(this.dots)
       .velocityDecay(0.19) // magic number (found by experimentation)
-      .force("collision", d3.forceCollide().radius(12).strength(0.85))
+      .force("collision", d3.forceCollide().radius(14).strength(0.85))
       .on("tick", ticked);
   }
 

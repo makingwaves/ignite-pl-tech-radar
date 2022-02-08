@@ -34,3 +34,7 @@ radar.render();
 legend.onMouseOver((entry) => {
   radar.highlightDot(entry.label);
 });
+
+legend.onMouseOut(() => {
+  radar.hideHighlightDot();
+});
