@@ -101,7 +101,7 @@ class RandomGenerator {
     }
 }
 
-function polar(cartesian: {x: number; y: number}) {
+function polar(cartesian: { x: number; y: number }) {
     const x = cartesian.x;
     const y = cartesian.y;
 
@@ -128,7 +128,7 @@ function bounded_interval(value: number, min: number, max: number) {
     return Math.min(Math.max(value, low), high);
 }
 
-function bounded_ring(polar: {t: number; r: number}, r_min: number, r_max: number) {
+function bounded_ring(polar: { t: number; r: number }, r_min: number, r_max: number) {
     return {
         t: polar.t,
         r: bounded_interval(polar.r, r_min, r_max),
@@ -142,80 +142,101 @@ function bounded_box(point: Point, min: Point, max: Point) {
     };
 }
 
+type Polar = {
+    r: number;
+    t: number
+}
+
+type QuadrantCoords = {
+    radial_min: number, radial_max: number, factor_x: number, factor_y: number
+}
+
+type RingCoords = {
+    radius: number
+}
+
+class Segment {
+    readonly randomGen = new RandomGenerator()
+
+    polarMin: Polar;
+    polarMax: Polar;
+    cartesianMin: Point;
+    cartesianMax: Point;
+
+    constructor(private quadrants: QuadrantCoords[], private rings: RingCoords[],  quadrant: 0 | 1 | 2 | 3, ring: 0 | 1 | 2 | 3) {
+        this.polarMin = {
+            t: this.quadrants[quadrant].radial_min * Math.PI,
+            r: ring === 0 ? 30 : this.rings[ring - 1].radius,
+        };
+        this.polarMax = {
+            t: this.quadrants[quadrant].radial_max * Math.PI,
+            r: this.rings[ring].radius,
+        };
+        this.cartesianMin = {
+            x: 15 * this.quadrants[quadrant].factor_x,
+            y: 15 * this.quadrants[quadrant].factor_y,
+        };
+        this.cartesianMax = {
+            x: this.rings[3].radius * this.quadrants[quadrant].factor_x,
+            y: this.rings[3].radius * this.quadrants[quadrant].factor_y,
+        };
+    }
+
+    clipX = (d: Point) => {
+        const c = bounded_box(d, this.cartesianMin, this.cartesianMax);
+        const p = bounded_ring(polar(c), this.polarMin.r + 15, this.polarMax.r - 15);
+        d.x = cartesian(p).x; // adjust data too!
+
+        return d.x;
+    }
+
+    clipY = (d: Point) => {
+        const c = bounded_box(d, this.cartesianMin, this.cartesianMax);
+        const p = bounded_ring(polar(c), this.polarMin.r + 15, this.polarMax.r - 15);
+        d.y = cartesian(p).y; // adjust data too!
+
+        return d.y;
+    }
+    random = () => {
+        return cartesian({
+                t: this.randomGen.random_between(this.polarMin.t, this.polarMax.t),
+                r: this.randomGen.normal_between(this.polarMin.r, this.polarMax.r),
+            }
+        );
+    }
+}
+
+
 export class Radar {
+    readonly randomGen = new RandomGenerator()
+    readonly quadrants: QuadrantCoords[] = [
+        {radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1},
+        {radial_min: 0.5, radial_max: 1, factor_x: -1, factor_y: 1},
+        {radial_min: -1, radial_max: -0.5, factor_x: -1, factor_y: -1},
+        {radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1},
+    ]
+    readonly rings: RingCoords[] = [
+        {radius: 130},
+        {radius: 220},
+        {radius: 310},
+        {radius: 400},
+    ]
+    readonly footer_offset = {x: -675, y: 420} as const;
+    readonly legend_offset = [
+        {x: 450, y: 90},
+        {x: -675, y: 90},
+        {x: -675, y: -310},
+        {x: 450, y: -310},
+    ] as const;
+
     constructor(private config: RadarConfig) {
     }
 
     render() {
-        const randomGen = new RandomGenerator()
-
-        // radial_min / radial_max are multiples of PI
-        const quadrants = [
-            {radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1},
-            {radial_min: 0.5, radial_max: 1, factor_x: -1, factor_y: 1},
-            {radial_min: -1, radial_max: -0.5, factor_x: -1, factor_y: -1},
-            {radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1},
-        ];
-
-        const rings = [
-            {radius: 130},
-            {radius: 220},
-            {radius: 310},
-            {radius: 400},
-        ];
-
-        const footer_offset = {x: -675, y: 420};
-
-        const legend_offset = [
-            {x: 450, y: 90},
-            {x: -675, y: 90},
-            {x: -675, y: -310},
-            {x: 450, y: -310},
-        ];
-
-        const segment = (quadrant, ring) => {
-            var polar_min = {
-                t: quadrants[quadrant].radial_min * Math.PI,
-                r: ring === 0 ? 30 : rings[ring - 1].radius,
-            };
-            var polar_max = {
-                t: quadrants[quadrant].radial_max * Math.PI,
-                r: rings[ring].radius,
-            };
-            var cartesian_min = {
-                x: 15 * quadrants[quadrant].factor_x,
-                y: 15 * quadrants[quadrant].factor_y,
-            };
-            var cartesian_max = {
-                x: rings[3].radius * quadrants[quadrant].factor_x,
-                y: rings[3].radius * quadrants[quadrant].factor_y,
-            };
-            return {
-                clipx: function (d) {
-                    var c = bounded_box(d, cartesian_min, cartesian_max);
-                    var p = bounded_ring(polar(c), polar_min.r + 15, polar_max.r - 15);
-                    d.x = cartesian(p).x; // adjust data too!
-                    return d.x;
-                },
-                clipy: function (d) {
-                    var c = bounded_box(d, cartesian_min, cartesian_max);
-                    var p = bounded_ring(polar(c), polar_min.r + 15, polar_max.r - 15);
-                    d.y = cartesian(p).y; // adjust data too!
-                    return d.y;
-                },
-                random: function () {
-                    return cartesian({
-                        t: randomGen.random_between(polar_min.t, polar_max.t),
-                        r:randomGen.normal_between(polar_min.r, polar_max.r),
-                    });
-                },
-            };
-        }
-
         // position each entry randomly in its segment
         for (var i = 0; i < this.config.entries.length; i++) {
             var entry = this.config.entries[i];
-            entry.segment = segment(entry.quadrant, entry.ring);
+            entry.segment = new Segment(this.quadrants, this.rings, entry.quadrant, entry.ring)
             var point = entry.segment.random();
             entry.x = point.x;
             entry.y = point.y;
@@ -256,10 +277,10 @@ export class Radar {
             return "translate(" + x + "," + y + ")";
         }
 
-        function viewbox(quadrant) {
+        const viewbox = (quadrant) => {
             return [
-                Math.max(0, quadrants[quadrant].factor_x * 400) - 420,
-                Math.max(0, quadrants[quadrant].factor_y * 400) - 420,
+                Math.max(0, this.quadrants[quadrant].factor_x * 400) - 420,
+                Math.max(0, this.quadrants[quadrant].factor_y * 400) - 420,
                 440,
                 440,
             ].join(" ");
@@ -312,12 +333,12 @@ export class Radar {
         filter.append("feComposite").attr("in", "SourceGraphic");
 
         // draw rings
-        for (var i = 0; i < rings.length; i++) {
+        for (var i = 0; i < this.rings.length; i++) {
             grid
                 .append("circle")
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .attr("r", rings[i].radius)
+                .attr("r", this.rings[i].radius)
                 .style("fill", "none")
                 .style("stroke", this.config.colors.grid)
                 .style("stroke-width", 1);
@@ -325,7 +346,7 @@ export class Radar {
                 grid
                     .append("text")
                     .text(this.config.rings[i].name)
-                    .attr("y", -rings[i].radius + 62)
+                    .attr("y", -this.rings[i].radius + 62)
                     .attr("text-anchor", "middle")
                     .style("fill", "#CECFD2")
                     .style("font-size", "42px")
@@ -336,15 +357,16 @@ export class Radar {
             }
         }
 
-        function legend_transform(quadrant, ring, index = null) {
+        const legend_transform=(quadrant, ring, index = null) =>{
             var dx = ring < 2 ? 0 : 120;
             var dy = index == null ? -16 : index * 16;
             if (ring % 2 === 1) {
                 dy = dy + 48 + segmented[quadrant][ring - 1].length * 12;
             }
+
             return translate(
-                legend_offset[quadrant].x + dx,
-                legend_offset[quadrant].y + dy
+                this.legend_offset[quadrant].x + dx,
+                this.legend_offset[quadrant].y + dy
             );
         }
 
@@ -353,7 +375,7 @@ export class Radar {
             // footer
             radar
                 .append("text")
-                .attr("transform", translate(footer_offset.x, footer_offset.y))
+                .attr("transform", translate(this.footer_offset.x, this.footer_offset.y))
                 .text("▲ moved up     ▼ moved down")
                 .attr("xml:space", "preserve")
                 .style("font-size", "12px");
@@ -365,7 +387,7 @@ export class Radar {
                     .append("text")
                     .attr(
                         "transform",
-                        translate(legend_offset[quadrant].x, legend_offset[quadrant].y - 45)
+                        translate(this.legend_offset[quadrant].x, this.legend_offset[quadrant].y - 45)
                     )
                     .text(this.config.quadrants[quadrant].name)
                     .style("font-size", "18px");
@@ -424,7 +446,7 @@ export class Radar {
         bubble.append("text").style("font-size", "10px").style("fill", "#F0EEEA");
         bubble.append("path").attr("d", "M 0,0 10,0 5,8 z").style("fill", "#676A6E");
 
-        const  showBubble= (d)=> {
+        const showBubble = (d) => {
             if (d.active || this.config.print_layout) {
                 var tooltip = d3.select("#bubble text").text(d.label);
                 var bbox = tooltip.node().getBBox();
@@ -484,7 +506,7 @@ export class Radar {
         const config = this.config
 
         // this.configure each blip
-        blips.each( function(d) {
+        blips.each(function (d) {
             var blip = d3.select(this);
 
             // blip link
@@ -527,7 +549,7 @@ export class Radar {
         // make sure that blips stay inside their segment
         function ticked() {
             blips.attr("transform", function (d) {
-                return translate(d.segment.clipx(d), d.segment.clipy(d));
+                return translate(d.segment.clipX(d), d.segment.clipY(d));
             });
         }
 
