@@ -84,11 +84,11 @@ type Point = {
 
 class RandomGenerator {
     // source: https://stackoverflow.com/questions/521295
-    constructor(private seed = 42) {
-    }
+    static seed = 42
+
 
     random() {
-        const x = Math.sin(this.seed++) * 10000;
+        const x = Math.sin(RandomGenerator.seed++) * 10000;
         return x - Math.floor(x);
     }
 
@@ -155,6 +155,8 @@ type RingCoords = {
     radius: number
 }
 
+type SegmentedDots = Array<Array<Dot[]>>
+
 class Segment {
     readonly randomGen = new RandomGenerator()
 
@@ -163,7 +165,7 @@ class Segment {
     cartesianMin: Point;
     cartesianMax: Point;
 
-    constructor(private quadrants: QuadrantCoords[], private rings: RingCoords[],  quadrant: 0 | 1 | 2 | 3, ring: 0 | 1 | 2 | 3) {
+    constructor(private quadrants: QuadrantCoords[], private rings: RingCoords[], quadrant: 0 | 1 | 2 | 3, ring: 0 | 1 | 2 | 3) {
         this.polarMin = {
             t: this.quadrants[quadrant].radial_min * Math.PI,
             r: ring === 0 ? 30 : this.rings[ring - 1].radius,
@@ -206,6 +208,42 @@ class Segment {
     }
 }
 
+class Dot implements Item {
+    ring: Ring;
+    quadrant: Quadrant;
+    moved: Moved;
+    label: string;
+    active: boolean;
+    position: Point;
+    segment: Segment;
+    color: string;
+    id: string;
+    x: number;
+    y: number
+
+    constructor(entry: Item) {
+        this.label = entry.label;
+        this.active = entry.active;
+        this.ring = entry.ring;
+        this.moved = entry.moved;
+        this.quadrant = entry.quadrant;
+    }
+}
+
+const createSegmentedArray = (): SegmentedDots => {
+    const dotsArr = () => [] as Dot[]
+
+    return [
+        [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
+        [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
+        [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
+        [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
+    ]
+}
+
+function translate(x, y) {
+    return "translate(" + x + "," + y + ")";
+}
 
 export class Radar {
     readonly randomGen = new RandomGenerator()
@@ -222,6 +260,9 @@ export class Radar {
         {radius: 400},
     ]
     readonly footer_offset = {x: -675, y: 420} as const;
+    /**
+     * @deprecated
+     */
     readonly legend_offset = [
         {x: 450, y: 90},
         {x: -675, y: 90},
@@ -229,62 +270,68 @@ export class Radar {
         {x: 450, y: -310},
     ] as const;
 
+    dots: Dot[]
+
     constructor(private config: RadarConfig) {
+        this.createDots()
+    }
+
+    createDots() {
+        this.dots = this.config.entries.map(entryItem => {
+            const dot = new Dot(entryItem);
+
+            dot.segment = new Segment(this.quadrants, this.rings, entryItem.quadrant, entryItem.ring)
+            dot.color = entryItem.active || this.config.print_layout
+                ? this.config.rings[entryItem.ring].color
+                : this.config.colors.inactive;
+
+            const position = dot.segment.random();
+            dot.x = position.x;
+            dot.y = position.y
+
+            return dot;
+        })
+    }
+
+    setDotsLabels(segments: SegmentedDots) {
+        let id = 1;
+        const quadrantsOrdered = [2, 3, 1, 0];
+
+        quadrantsOrdered.forEach(quadrant => {
+            for (let ring = 0; ring < 4; ring++) {
+                const dotsInSegment = segments[quadrant][ring];
+
+                dotsInSegment.sort(function (a, b) {
+                    return a.label.localeCompare(b.label);
+                });
+
+                dotsInSegment.forEach((dot) => {
+                    dot.id = `${id++}`
+                })
+
+            }
+        })
+
+    }
+     getQuadrantViewbox = (quadrant: number) => {
+        return [
+            Math.max(0, this.quadrants[quadrant].factor_x * 400) - 420,
+            Math.max(0, this.quadrants[quadrant].factor_y * 400) - 420,
+            440,
+            440,
+        ].join(" ");
     }
 
     render() {
-        // position each entry randomly in its segment
-        for (var i = 0; i < this.config.entries.length; i++) {
-            var entry = this.config.entries[i];
-            entry.segment = new Segment(this.quadrants, this.rings, entry.quadrant, entry.ring)
-            var point = entry.segment.random();
-            entry.x = point.x;
-            entry.y = point.y;
-            entry.color =
-                entry.active || this.config.print_layout
-                    ? this.config.rings[entry.ring].color
-                    : this.config.colors.inactive;
-        }
+        const segments = createSegmentedArray()
 
-        // partition entries according to segments
-        var segmented = new Array(4);
-        for (var quadrant = 0; quadrant < 4; quadrant++) {
-            segmented[quadrant] = new Array(4);
-            for (var ring = 0; ring < 4; ring++) {
-                segmented[quadrant][ring] = [];
-            }
-        }
-        for (var i = 0; i < this.config.entries.length; i++) {
-            var entry = this.config.entries[i];
-            segmented[entry.quadrant][entry.ring].push(entry);
-        }
+        this.dots.forEach((dot, i) => {
+            segments[dot.quadrant][dot.ring].push(dot);
+        })
 
-        // assign unique sequential id to each entry
-        var id = 1;
-        for (var quadrant of [2, 3, 1, 0]) {
-            for (var ring = 0; ring < 4; ring++) {
-                var entries = segmented[quadrant][ring];
-                entries.sort(function (a, b) {
-                    return a.label.localeCompare(b.label);
-                });
-                for (var i = 0; i < entries.length; i++) {
-                    entries[i].id = "" + id++;
-                }
-            }
-        }
+        this.setDotsLabels(segments)
 
-        function translate(x, y) {
-            return "translate(" + x + "," + y + ")";
-        }
 
-        const viewbox = (quadrant) => {
-            return [
-                Math.max(0, this.quadrants[quadrant].factor_x * 400) - 420,
-                Math.max(0, this.quadrants[quadrant].factor_y * 400) - 420,
-                440,
-                440,
-            ].join(" ");
-        }
 
         var svg = d3
             .select("svg#" + this.config.svg_id)
@@ -294,14 +341,13 @@ export class Radar {
 
         var radar = svg.append("g");
         if ("zoomed_quadrant" in this.config) {
-            svg.attr("viewBox", viewbox(this.config.zoomed_quadrant));
+            svg.attr("viewBox", this.getQuadrantViewbox(this.config.zoomed_quadrant));
         } else {
             radar.attr("transform", translate(this.config.width / 2, this.config.height / 2));
         }
 
         var grid = radar.append("g");
 
-        // draw grid lines
         grid
             .append("line")
             .attr("x1", 0)
@@ -357,11 +403,11 @@ export class Radar {
             }
         }
 
-        const legend_transform=(quadrant, ring, index = null) =>{
+        const legend_transform = (quadrant, ring, index = null) => {
             var dx = ring < 2 ? 0 : 120;
             var dy = index == null ? -16 : index * 16;
             if (ring % 2 === 1) {
-                dy = dy + 48 + segmented[quadrant][ring - 1].length * 12;
+                dy = dy + 48 + segments[quadrant][ring - 1].length * 12;
             }
 
             return translate(
@@ -400,7 +446,7 @@ export class Radar {
                         .style("font-weight", "700");
                     legend
                         .selectAll(".legend" + quadrant + ring)
-                        .data(segmented[quadrant][ring])
+                        .data(segments[quadrant][ring])
                         .enter()
                         .append("a")
                         .attr("href", function (d, i) {
@@ -487,7 +533,7 @@ export class Radar {
         // draw blips on radar
         var blips = rink
             .selectAll(".blip")
-            .data(this.config.entries)
+            .data(this.dots)
             .enter()
             .append("g")
             .attr("class", "blip")
