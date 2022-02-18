@@ -7,12 +7,12 @@
   import { globalHistory } from 'svelte-routing/src/history';
   import { onDestroy, onMount } from "svelte";
 
-  const getTitle = (pathname) => {
-    switch (pathname) {
-      case "/":
-        return "NoA Tech Radar - Feb 2022";
-      case "/martech":
+  const getTitle = (pathname: string) => {
+    switch (true) {
+      case pathname.includes("/martech"):
         return "NoA Martech Radar - Feb 2022";
+      case pathname.includes("/"):
+        return "NoA Tech Radar - Feb 2022";
     }
   };
 
@@ -59,8 +59,8 @@
     <main>
       <aside>
         <nav>
-          <Link getProps="{getLinkProps}" to="/">NoA Tech Radar</Link>
-          <Link getProps="{getLinkProps}" to="/martech">Martech</Link>
+          <Link getProps="{getLinkProps}" to="/ignite-pl-tech-radar/">NoA Tech Radar</Link>
+          <Link getProps="{getLinkProps}" to="/ignite-pl-tech-radar/martech">Martech</Link>
         </nav>
 
       </aside>
