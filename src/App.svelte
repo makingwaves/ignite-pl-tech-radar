@@ -48,7 +48,7 @@
   // todo - router base path
 </script>
 
-<Router>
+<Router basepath="/ignite-pl-tech-radar">
   <div class="root-container">
     <header>
       <Logo />
