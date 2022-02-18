@@ -22,7 +22,6 @@
 
   onMount(() => {
     unsub = globalHistory.listen(({ location, action }) => {
-      console.log(location, action);
       pathname = location.pathname;
     });
   });
@@ -30,7 +29,7 @@
 
 
   function getLinkProps({ location, href, isPartiallyCurrent, isCurrent }) {
-    const isActive = href === "/" ? isCurrent : isPartiallyCurrent || isCurrent;
+    const isActive = href === location;
 
     if (isActive) {
       return { class: "active link" };
