@@ -2,6 +2,7 @@
   "name": "noa-pl-tech-radar",
   "version": "1.0.0",
   "source": "src/index.html",
+  "basepath": "/ignite-pl-tech-radar/",
   "private": true,
   "scripts": {
     "build": "rm -rf docs && rollup -c && cp -r public docs",
