@@ -40,7 +40,7 @@ export enum Ring {
 }
 
 export type RadarConfig = {
-  svg_id: string;
+  element: Element;
   width: number;
   height: number;
   colors: {

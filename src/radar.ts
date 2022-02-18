@@ -1,9 +1,9 @@
 import * as d3 from "d3";
 import { RandomGenerator } from "./random-generator";
-import { Point, Polar, QuadrantCoords, RingCoords } from "./coords";
 import { Dot } from "./dot";
 import { DotPositioner } from "./dot-positioner";
-import { RadarConfig } from "./radar-config";
+import type { QuadrantCoords, RingCoords } from "./coords";
+import type { RadarConfig } from "./radar-config";
 
 type SegmentedDots = Array<Array<Dot[]>>;
 
@@ -99,7 +99,7 @@ export class Radar {
 
   private createRootElement() {
     return d3
-      .select("svg#" + this.config.svg_id)
+      .select(this.config.element)
       .style("background-color", this.config.colors.background)
       .attr("width", this.config.width)
       .attr("height", this.config.height);

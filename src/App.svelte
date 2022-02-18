@@ -1,47 +1,6 @@
 <script lang="ts">
-	import { companyData, quadrants, rings } from "./data/company-data";
-	import { Radar } from "./radar";
-	import { Legend } from "./legend";
-	import { onMount } from "svelte";
-
-	onMount(() => {
-		const radar = new Radar({
-			svg_id: "company-radar",
-			width: 800,
-			height: 800,
-			colors: {
-				background: "#F0EEEA",
-				grid: "#CECFD2",
-				inactive: "#ddd",
-			},
-			quadrants,
-			rings,
-			entries: companyData,
-		});
-
-		const legend = new Legend({
-			quadrants,
-			rings,
-			data: companyData,
-			rootElement: document.querySelector("#company-legend"),
-		});
-
-		legend.render();
-
-		radar.onDotMouseOver((dot) => legend.highlightByLabel(dot.label));
-		radar.onDotMouseOut((dot) => legend.removeHighlightByLabel(dot.label));
-
-		radar.render();
-
-		legend.onMouseOver((entry) => {
-			radar.highlightDot(entry.label);
-		});
-
-		legend.onMouseOut(() => {
-			radar.hideHighlightDot();
-		});
-	})
-
+import Radar from "./Radar.svelte";
+import {rings, quadrants, companyData} from './data/company-data'
 </script>
 
 <div class="container">
@@ -54,8 +13,7 @@
 				<h1>NoA Ignite Poland - Tech Radar Feb 2022</h1>
 			</header>
 			<div class="wrapper">
-				<div id="company-legend"></div>
-				<svg id="company-radar"></svg>
+				<Radar quadrants={quadrants} data={companyData} rings={rings} />
 			</div>
 		</div>
 	</div>
