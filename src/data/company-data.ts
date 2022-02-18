@@ -1,4 +1,4 @@
-import { EntryItem, Moved, Quadrant, RadarConfig, Ring } from "./radar-config";
+import { EntryItem, Moved, Quadrant, RadarConfig, Ring } from "../radar-config";
 
 export const rings: RadarConfig["rings"] = [
   { name: "ADOPT", color: "#EB4646", textColor: "#DBD1C7", index: Ring.Adopt },
@@ -19,7 +19,7 @@ export const quadrants: RadarConfig["quadrants"] = [
   { name: "TODO", index: Quadrant.TopRight },
 ];
 
-export const data: EntryItem[] = [
+export const companyData: EntryItem[] = [
   {
     quadrant: Quadrant.BottomRight,
     ring: Ring.Adopt,
