@@ -1,5 +1,5 @@
 import { RandomGenerator } from "./random-generator";
-import { Point, Polar, QuadrantCoords, RingCoords } from "./coords";
+import type { Point, Polar, QuadrantCoords, RingCoords } from "./coords";
 
 export class DotPositioner {
   readonly randomGen = new RandomGenerator();

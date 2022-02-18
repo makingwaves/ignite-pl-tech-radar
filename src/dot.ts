@@ -1,6 +1,6 @@
-import { Point } from "./coords";
-import { DotPositioner } from "./dot-positioner";
-import { EntryItem, Moved, Quadrant, Ring } from "./radar-config";
+import type { Point } from "./coords";
+import type { DotPositioner } from "./dot-positioner";
+import type { EntryItem, Moved, Quadrant, Ring } from "./radar-config";
 
 export class Dot implements EntryItem {
   ring: Ring;

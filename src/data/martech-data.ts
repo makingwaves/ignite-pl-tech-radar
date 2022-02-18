@@ -1,6 +1,6 @@
 import { EntryItem, Moved, Quadrant, RadarConfig, Ring } from "../radar-config";
 
-export const rings: RadarConfig["rings"] = [
+const rings: RadarConfig["rings"] = [
   { name: "ADOPT", color: "#EB4646", textColor: "#DBD1C7", index: Ring.Adopt },
   { name: "TRIAL", color: "#CAE0DC", textColor: "#001932", index: Ring.Trial },
   {
@@ -12,14 +12,14 @@ export const rings: RadarConfig["rings"] = [
   { name: "HOLD", color: "#001932", textColor: "#DBD1C7", index: Ring.Hold },
 ];
 
-export const quadrants: RadarConfig["quadrants"] = [
+const quadrants: RadarConfig["quadrants"] = [
   { name: "CMS & Data", index: Quadrant.BottomRight },
   { name: "User analytics", index: Quadrant.BottomLeft },
   { name: "Distribution", index: Quadrant.TopLeft },
   { name: "Commerce", index: Quadrant.TopRight },
 ];
 
-export const data: EntryItem[] = [
+const items: EntryItem[] = [
   {
     quadrant: Quadrant.BottomRight,
     ring: Ring.Adopt,
@@ -154,3 +154,9 @@ export const data: EntryItem[] = [
     moved: Moved.None,
   },
 ];
+
+export const MartechData = {
+  rings,
+  quadrants,
+  items,
+};
