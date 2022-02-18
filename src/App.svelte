@@ -1,6 +1,7 @@
 <script lang="ts">
 import Radar from "./Radar.svelte";
 import {rings, quadrants, companyData} from './data/company-data'
+import Legend from "./Legend.svelte";
 </script>
 
 <div class="container">
@@ -13,6 +14,7 @@ import {rings, quadrants, companyData} from './data/company-data'
 				<h1>NoA Ignite Poland - Tech Radar Feb 2022</h1>
 			</header>
 			<div class="wrapper">
+				<Legend quadrants={quadrants} data={companyData} rings={rings} />
 				<Radar quadrants={quadrants} data={companyData} rings={rings} />
 			</div>
 		</div>

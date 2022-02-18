@@ -1,4 +1,4 @@
-import { EntryItem, QuadrantConfig, RingConfig } from "./radar-config";
+import type { EntryItem, QuadrantConfig, RingConfig } from "./radar-config";
 
 export interface LegendConfig {
   data: EntryItem[];
