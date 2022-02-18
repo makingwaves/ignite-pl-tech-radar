@@ -1,4 +1,5 @@
-import { EntryItem, Moved, Quadrant, RadarConfig, Ring } from "../radar-config";
+import type { EntryItem, RadarConfig } from "../logic/radar-config";
+import { Quadrant, Ring, Moved } from "../logic/radar-config";
 
 const rings: RadarConfig["rings"] = [
   { name: "ADOPT", color: "#EB4646", textColor: "#DBD1C7", index: Ring.Adopt },

@@ -1,18 +1,19 @@
 {
   "name": "noa-pl-tech-radar",
   "version": "1.0.0",
-  "source": "src/index.html",
-  "basepath": "/ignite-pl-tech-radar/",
+  "basepath": "/ignite-pl-tech-radar",
   "private": true,
   "scripts": {
-    "build": "rm -rf docs && rollup -c && cp -r public dist && cp dist/index.html dist/404.html",
-    "dev": "rollup -c -w",
-    "start": "sirv public --no-clear",
-    "check": "svelte-check --tsconfig ./tsconfig.json",
-    "prettier": "prettier --write src",
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "package": "svelte-kit package",
+    "preview": "svelte-kit preview",
+    "check": "svelte-check --tsconfig tsconfig.json",
+    "check:watch": "svelte-check --tsconfig tsconfig.json --watch",
+    "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
+    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
     "deploy": "gh-pages -d dist"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/makingwaves/ignite-pl-tech-radar.git"
@@ -30,21 +31,31 @@
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0",
-    "svelte-check": "^2.0.0",
-    "svelte-preprocess": "^4.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
-    "typescript": "^4.0.0",
-    "tslib": "^2.0.0",
     "@tsconfig/svelte": "^2.0.0",
-    "prettier": "^2.5.1",
     "@types/d3": "4.11.0",
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/adapter-static": "^1.0.0-next.28",
+    "@sveltejs/kit": "next",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-svelte3": "^3.2.1",
+    "prettier": "^2.5.1",
+    "prettier-plugin-svelte": "^2.5.0",
+    "svelte": "^3.44.0",
+    "svelte-check": "^2.2.6",
+    "svelte-preprocess": "^4.10.1",
+    "tslib": "^2.3.1",
+    "typescript": "~4.5.4"
   },
   "author": "",
   "license": "ISC",
   "prettier": {
     "arrowParens": "always",
     "bracketSpacing": true
-  }
+  },
+  "type": "module"
 }
