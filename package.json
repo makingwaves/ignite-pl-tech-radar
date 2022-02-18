@@ -5,7 +5,7 @@
   "basepath": "/ignite-pl-tech-radar/",
   "private": true,
   "scripts": {
-    "build": "rm -rf docs && rollup -c && cp -r public docs",
+    "build": "rm -rf docs && rollup -c && cp -r public docs && cp docs/index.html docs/404.html",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear",
     "check": "svelte-check --tsconfig ./tsconfig.json",
