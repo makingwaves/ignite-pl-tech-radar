@@ -15,9 +15,9 @@ const rings: RadarConfig["rings"] = [
 
 const quadrants: RadarConfig["quadrants"] = [
   { name: "Languages & Frameworks", index: Quadrant.BottomRight },
-  { name: "TODO", index: Quadrant.BottomLeft },
-  { name: "TODO", index: Quadrant.TopLeft },
-  { name: "TODO", index: Quadrant.TopRight },
+  { name: "Products, Platforms & Cloud", index: Quadrant.BottomLeft },
+  { name: "Technics", index: Quadrant.TopLeft },
+  { name: "Tools", index: Quadrant.TopRight },
 ];
 
 const items: EntryItem[] = [
@@ -57,29 +57,44 @@ const items: EntryItem[] = [
     moved: Moved.None,
     link: "https://nodejs.org/en/",
   },
+  // BottomRight
+  // C#, .NET, OpenAPI, PHP, ASP.NET, GraphQL, Java
+
+  // BottomLeft
+  // Azure CosmosDB, Azure Service Bus, Azure Storage, Azure AD, Azure Functions, Azure ARM Templates, AWS EC2, Azure App Service, Azure App Insights, AWS CloudWatch, Azure Kubernetes Service, AWS Fargate, Power BI, Elasticsearch, Google Cloud Translation API, Microsoft SQL Server, Entity Framework, Optimizely Search & Navigation, Optimizdely DXP, Umbraco, AWS SES, Azure Sendgrid, Azure VMs, Azure Key Vault, Firebase, Azure Cognitive Services, Blazor, Sitefinity, Virto Commerce,
+
+  // TopLeft
+  // OWASP, TDD, Gitflow, Trunk Based Development, IaaC, CQRS, Microservices, DDD, Headless architecture, agile, Scrum, pair programming, code review, API management, feature toggles, CI/CD, focus time, Always upgrade as a practice, Collective code ownership, metrics, MVPs - prototyping, using telemetry, 2-factor auth, code guides, auto code formatting
+
+  // TopRight
+  // Grafana, ELK stack, Kubernetes, GitHub, GitLab Azure DevOps, TeamCity, Octopus, VSCode, Visual Studio, IntelliJ IDEA, IntelliJ WebStorm, IntelliJ Rider, Postman, npm, Yarn, grunt, gulp, Confluence, Trello, Miro, Jira, OWASP ZAP, SonarCube, Sentry.io,
+
+  // TODO: Prefixes ala https://ministryofjustice.github.io/hmpps-digital-tech-radar/docs/index.html
+  // TODO: Conclusions, tools, etc. from state of JS 2021?
+  // TODO: Add code formatting tools? E.g.: Prettier, ESLint...
   {
-    quadrant: Quadrant.TopLeft,
+    quadrant: Quadrant.BottomLeft,
     ring: Ring.Adopt,
     label: "Sanity.io",
     active: true,
     moved: Moved.None,
   },
   {
-    quadrant: Quadrant.TopLeft,
+    quadrant: Quadrant.BottomLeft,
     ring: Ring.Adopt,
     label: "Contentful",
     active: true,
     moved: Moved.None,
   },
   {
-    quadrant: Quadrant.TopLeft,
+    quadrant: Quadrant.BottomLeft,
     ring: Ring.Assess,
     label: "Shopify",
     active: true,
     moved: Moved.None,
   },
   {
-    quadrant: Quadrant.TopLeft,
+    quadrant: Quadrant.BottomLeft,
     ring: Ring.Adopt,
     label: "Optimizely",
     active: true,
