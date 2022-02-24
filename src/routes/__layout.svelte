@@ -2,8 +2,12 @@
   import Logo from "../components/Logo.svelte";
   import { page } from "$app/stores";
   import { radars } from "../data/radars";
+  import { base } from '$app/paths';
 
-  $: title = radars.find((r) => r.url === $page.url.pathname).title;
+
+  $: title = radars.find((r) => {
+    return `${base}${r.url}`.replaceAll('/', '') === $page.url.pathname.replaceAll('/', '');
+  }).title;
 </script>
 
 <div class="root-container">
@@ -20,7 +24,7 @@
           <a
             class:active={$page.url.pathname === radar.url}
             class="link"
-            href={radar.url}>{radar.link}</a
+            href={base + radar.url}>{radar.link}</a
           >
         {/each}
       </nav>
@@ -32,14 +36,14 @@
 <style>
   @font-face {
     font-family: "Aften Screen";
-    src: url("/fonts/font-aften.ttf") format("truetype");
+    src: url("fonts/font-aften.ttf") format("truetype");
     font-weight: 400;
     font-style: normal;
   }
 
   @font-face {
     font-family: "Aften Screen";
-    src: url("/fonts/font-aften-bold.ttf") format("truetype");
+    src: url("fonts/font-aften-bold.ttf") format("truetype");
     font-weight: 700;
     font-style: normal;
   }

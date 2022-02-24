@@ -1,4 +1,4 @@
-<img src="/logo.svg" alt="NoA Ignite Logo" />
+<img src="logo.svg" alt="NoA Ignite Logo" />
 
 <style>
   img {
