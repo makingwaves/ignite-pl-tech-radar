@@ -3,9 +3,25 @@
   <head>
     <meta charset="utf-8" />
     <meta name="description" content="NoA PL Tech Radar" />
-    <link rel="icon" href="%svelte.assets%/favicon.png" />
+    <link rel="icon" href="%svelte.assets%/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     %svelte.head%
+
+    <style>
+        @font-face {
+            font-family: "Aften Screen";
+            src: url("%svelte.assets%/fonts/font-aften.ttf") format("truetype");
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "Aften Screen";
+            src: url("%svelte.assets%/fonts/font-aften-bold.ttf") format("truetype");
+            font-weight: 700;
+            font-style: normal;
+        }
+    </style>
   </head>
   <body>
    <div id="svelte">%svelte.body%</div>
