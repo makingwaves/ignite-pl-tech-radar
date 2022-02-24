@@ -1,10 +1,11 @@
 {
   ".svelte-kit/runtime/client/start.js": {
-    "file": "start-833058c3.js",
+    "file": "start-7c2540f2.js",
     "src": ".svelte-kit/runtime/client/start.js",
     "isEntry": true,
     "imports": [
-      "_vendor-132ca1f5.js"
+      "_vendor-132ca1f5.js",
+      "_paths-4b3c6e7e.js"
     ],
     "dynamicImports": [
       "src/routes/__layout.svelte",
@@ -14,12 +15,13 @@
     ]
   },
   "src/routes/__layout.svelte": {
-    "file": "pages/__layout.svelte-a87e721e.js",
+    "file": "pages/__layout.svelte-a08fdd5f.js",
     "src": "src/routes/__layout.svelte",
     "isEntry": true,
     "isDynamicEntry": true,
     "imports": [
-      "_vendor-132ca1f5.js"
+      "_vendor-132ca1f5.js",
+      "_paths-4b3c6e7e.js"
     ],
     "css": [
       "assets/pages/__layout.svelte-4bf73a48.css"
@@ -56,6 +58,9 @@
   },
   "_vendor-132ca1f5.js": {
     "file": "chunks/vendor-132ca1f5.js"
+  },
+  "_paths-4b3c6e7e.js": {
+    "file": "chunks/paths-4b3c6e7e.js"
   },
   "_radar-config-f0d21f70.js": {
     "file": "chunks/radar-config-f0d21f70.js",
