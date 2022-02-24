@@ -23,7 +23,7 @@
         >
           <h3 class="ring-label">{ring.name}</h3>
 
-          {#each data.filter((entry) => {
+          {#each data.sort((a, b) => a.label.localeCompare(b.label)).filter((entry) => {
             return entry.quadrant === quadrant.index && entry.ring === ring.index;
           }) as item}
             <span

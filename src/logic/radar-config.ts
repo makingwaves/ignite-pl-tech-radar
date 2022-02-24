@@ -14,10 +14,12 @@ export type EntryItem = {
   quadrant: Quadrant;
   ring: Ring;
   label: string;
-  active: boolean;
+  active?: boolean;
   moved: Moved;
   link?: string;
 };
+
+export type EntryItemWithoutQuadrant = Omit<EntryItem, "quadrant">;
 
 export enum Quadrant {
   BottomRight = 0,

@@ -285,7 +285,7 @@ export class Radar {
           .attr("d", "M -11,-5 11,-5 0,13 z") // triangle pointing down
           .style("fill", dot.color);
       } else {
-        blip.append("circle").attr("r", 12).attr("fill", dot.color);
+        blip.append("circle").attr("r", 8).attr("fill", dot.color);
       }
 
       // show labels on dots?

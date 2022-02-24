@@ -11,7 +11,7 @@ const config = {
   kit: {
     prerender: { onError: "continue" },
     paths: {
-      base: dev ? "/" : "/ignite-pl-tech-radar",
+      base: dev ? "" : "/ignite-pl-tech-radar",
     },
     adapter: adapter(),
     appDir: "internal",
