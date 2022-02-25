@@ -1,12 +1,20 @@
 <script lang="ts">
   import { Radar } from "../logic/radar.ts";
-  import { onMount } from "svelte";
+  import { createEventDispatcher, onMount } from "svelte";
   import type { EntryItem, RadarConfig } from "../logic/radar-config";
+  import { Quadrant } from "../logic/radar-config";
 
   export let rings: RadarConfig["rings"];
   export let quadrants: RadarConfig["quadrants"];
   export let data: EntryItem[];
+  export let highlightDot: (label: string) => void;
+  export let hideHighlightDot: () => void;
+  export let showHighlightQuadrant: (quadrant: Quadrant) => void;
+  export let hideHighlightQuadrant: () => void;
+
   let htmlNode: Element;
+
+  const dispatcher = createEventDispatcher();
 
   onMount(() => {
     const radar = new Radar({
@@ -16,12 +24,28 @@
       colors: {
         background: "#F0EEEA",
         grid: "#CECFD2",
-        inactive: "#ddd",
+        inactive: "#ddd"
       },
       quadrants,
       rings,
-      entries: data,
+      entries: data
     });
+
+    highlightDot = (label: string) => {
+      radar.highlightDot(label)
+    }
+
+    hideHighlightDot = () => radar.hideHighlightDot()
+
+    showHighlightQuadrant = quadrant => radar.highlightQuadrant(quadrant)
+    hideHighlightQuadrant = () => radar.removeQuadrantHighlight()
+
+    radar.onDotMouseOver(
+      dot => dispatcher("dot-show-highlight", dot)
+    );
+    radar.onDotMouseOut(
+      dot => dispatcher("dot-hide-highlight", dot)
+    );
 
     // const legend = new Legend({
     //   quadrants,

@@ -191,7 +191,7 @@ export class Radar {
   }
 
   removeQuadrantHighlight() {
-    d3.select(this.elements.quadrantHighlight).remove();
+    d3.select("#quarter-highlight").remove();
     this.elements.quadrantHighlight = null;
   }
 
@@ -199,11 +199,13 @@ export class Radar {
     svgRoot: d3.Selection<Element, unknown, null, undefined>,
     quadrant: "top-right" | "top-left" | "bottom-right" | "bottom-left"
   ) {
+    this.removeQuadrantHighlight();
     this.elements.quadrantHighlight = svgRoot.append("path");
 
     let centerX: number;
     let centerY: number;
     let rotateAngle = 0;
+    let transformOrigin: string;
 
     const majorRadius = 400 - 1;
     const minorRadius = 400 - 1;
@@ -213,21 +215,25 @@ export class Radar {
         centerY = 0;
         centerX = 400;
         rotateAngle = 270;
+        transformOrigin = "600 200";
         break;
       case "top-left":
         centerY = 0;
         centerX = 0;
         rotateAngle = -180;
+        transformOrigin = "200 200";
         break;
       case "bottom-right":
         centerY = 400;
         centerX = 400;
         rotateAngle = 0;
+        transformOrigin = "200 600";
         break;
       case "bottom-left":
         centerY = 400;
         centerX = 0;
         rotateAngle = 90;
+        transformOrigin = "200 600";
         break;
     }
 
@@ -242,9 +248,10 @@ export class Radar {
         }
       `
       )
+      .attr("id", "quarter-highlight")
       .style("stroke", "#EB4646")
       .style("fill", "none")
-      .attr("transform-origin", `200 200`)
+      .attr("transform-origin", transformOrigin)
       .style("transform", `rotate(${rotateAngle}deg)`);
   }
 
@@ -277,6 +284,8 @@ export class Radar {
     const radarGroup = rootSvgElement.append("g");
 
     this.elements.rootEl = rootSvgElement;
+
+    this.renderQuarterHighlight(rootSvgElement, "top-right");
 
     if ("zoomed_quadrant" in this.config) {
       rootSvgElement.attr(
