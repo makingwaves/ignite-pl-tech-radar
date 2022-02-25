@@ -1,155 +1,6 @@
 import * as d3 from "d3";
-import { RandomGenerator } from "./random-generator";
-import { Dot } from "./dot";
-import { DotPositioner } from "./dot-positioner";
-import type { QuadrantCoords, RingCoords } from "./coords";
-import type { RadarConfig } from "./radar-config";
-import { Quadrant } from "./radar-config";
-
-type SegmentedDots = Array<Array<Dot[]>>;
-
-const createSegmentedArray = (): SegmentedDots => {
-  const dotsArr = () => [] as Dot[];
-
-  return [
-    [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
-    [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
-    [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
-    [dotsArr(), dotsArr(), dotsArr(), dotsArr()],
-  ];
-};
-
-function translate(x, y) {
-  return "translate(" + x + "," + y + ")";
-}
 
 export class Radar {
-  readonly randomGen = new RandomGenerator();
-  readonly quadrants: QuadrantCoords[] = [
-    { radial_min: 0, radial_max: 0.5, factor_x: 1, factor_y: 1 },
-    { radial_min: 0.5, radial_max: 1, factor_x: -1, factor_y: 1 },
-    { radial_min: -1, radial_max: -0.5, factor_x: -1, factor_y: -1 },
-    { radial_min: -0.5, radial_max: 0, factor_x: 1, factor_y: -1 },
-  ];
-  readonly rings: RingCoords[] = [
-    { radius: 130 },
-    { radius: 220 },
-    { radius: 310 },
-    { radius: 400 },
-  ];
-
-  private elements = {
-    rootEl: null,
-    quadrantHighlight: null,
-  };
-
-  dots: Dot[];
-  eventHandlers = {
-    onDotMouseOver: (dot: Dot) => {},
-    onDotMouseOut: (dot: Dot) => {},
-  };
-
-  constructor(private config: RadarConfig) {
-    this.createDots();
-  }
-
-  private createDots() {
-    this.dots = this.config.entries.map((entryItem) => {
-      const dot = new Dot(entryItem);
-
-      dot.segment = new DotPositioner(
-        this.quadrants,
-        this.rings,
-        entryItem.quadrant,
-        entryItem.ring
-      );
-      dot.color = entryItem.active
-        ? this.config.rings[entryItem.ring].color
-        : this.config.colors.inactive;
-
-      const position = dot.segment.random();
-      dot.x = position.x;
-      dot.y = position.y;
-
-      return dot;
-    });
-  }
-
-  private setDotsLabels(segments: SegmentedDots) {
-    let id = 1;
-    const quadrantsOrdered = [2, 3, 1, 0];
-
-    quadrantsOrdered.forEach((quadrant) => {
-      for (let ring = 0; ring < 4; ring++) {
-        const dotsInSegment = segments[quadrant][ring];
-
-        dotsInSegment.sort(function (a, b) {
-          return a.label.localeCompare(b.label);
-        });
-
-        dotsInSegment.forEach((dot) => {
-          dot.id = `${id++}`;
-        });
-      }
-    });
-  }
-
-  private getQuadrantViewbox = (quadrant: number) => {
-    return [
-      Math.max(0, this.quadrants[quadrant].factor_x * 400) - 420,
-      Math.max(0, this.quadrants[quadrant].factor_y * 400) - 420,
-      440,
-      440,
-    ].join(" ");
-  };
-
-  /**
-   * @deprecated
-   * @private
-   */
-  private createRootElement() {
-    return d3
-      .select(this.config.element)
-      .style("background-color", this.config.colors.background)
-      .attr("width", this.config.width)
-      .attr("height", this.config.height);
-  }
-
-  /**
-   * @deprecated
-   * @param radarEl
-   * @private
-   */
-  private createGrid(
-    radarEl: d3.Selection<SVGElement, unknown, HTMLElement, any>
-  ) {
-    const gridGroup = radarEl.append("g");
-
-    const verticalLine = gridGroup
-      .append("line")
-      .attr("x1", 0)
-      .attr("y1", -400)
-      .attr("x2", 0)
-      .attr("y2", 400)
-      .style("stroke", this.config.colors.grid)
-      .style("stroke-width", 1);
-
-    const horizonalLine = gridGroup
-      .append("line")
-      .attr("x1", -400)
-      .attr("y1", 0)
-      .attr("x2", 400)
-      .attr("y2", 0)
-      .style("stroke", this.config.colors.grid)
-      .style("stroke-width", 1);
-
-    return {
-      gridGroup,
-      horizonalLine,
-      verticalLine,
-    };
-  }
-
   private showBubble(d: Dot) {
     const tooltip = d3.select("#bubble text").text(d.label);
     const bbox = (tooltip.node() as SVGGraphicsElement).getBBox();
@@ -172,43 +23,10 @@ export class Radar {
     d3.select("#bubble").attr("transform", translate(0, 0)).style("opacity", 0);
   }
 
-  private drawRings(
-    gridGroup: d3.Selection<SVGElement, unknown, HTMLElement, any>
-  ) {
-    this.rings.forEach((ring, index) => {
-      gridGroup
-        .append("circle")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("r", ring.radius)
-        .style("fill", "none")
-        .style("stroke", this.config.colors.grid)
-        .style("stroke-width", 1);
-
-      gridGroup
-        .append("text")
-        .text(this.config.rings[index].name) // todo - move ring name to RingCoords and change it to generic Ring
-        .attr("y", -ring.radius + 62)
-        .attr("text-anchor", "middle")
-        .style("fill", "#CECFD2")
-        .style("font-size", "42px")
-        .style("opacity", "0.5")
-        .style("font-weight", "700")
-        .style("pointer-events", "none")
-        .style("user-select", "none");
-    });
-  }
-
-  removeQuadrantHighlight() {
-    d3.select("#quarter-highlight").remove();
-    this.elements.quadrantHighlight = null;
-  }
-
   private renderQuarterHighlight(
     svgRoot: d3.Selection<Element, unknown, null, undefined>,
     quadrant: "top-right" | "top-left" | "bottom-right" | "bottom-left"
   ) {
-    this.removeQuadrantHighlight();
     this.elements.quadrantHighlight = svgRoot.append("path");
 
     let centerX: number;
@@ -265,54 +83,7 @@ export class Radar {
       .style("transform", `rotate(${rotateAngle}deg)`);
   }
 
-  highlightQuadrant(quadrant: Quadrant) {
-    switch (quadrant) {
-      case Quadrant.BottomRight:
-        return this.renderQuarterHighlight(
-          this.elements.rootEl,
-          "bottom-right"
-        );
-      case Quadrant.BottomLeft:
-        return this.renderQuarterHighlight(this.elements.rootEl, "bottom-left");
-      case Quadrant.TopLeft:
-        return this.renderQuarterHighlight(this.elements.rootEl, "top-left");
-      case Quadrant.TopRight:
-        return this.renderQuarterHighlight(this.elements.rootEl, "top-right");
-    }
-  }
-
   render() {
-    const segments = createSegmentedArray();
-
-    this.dots.forEach((dot, i) => {
-      segments[dot.quadrant][dot.ring].push(dot);
-    });
-
-    this.setDotsLabels(segments);
-
-    const rootSvgElement = this.createRootElement();
-    const radarGroup = rootSvgElement.append("g");
-
-    this.elements.rootEl = rootSvgElement;
-
-    if ("zoomed_quadrant" in this.config) {
-      rootSvgElement.attr(
-        "viewBox",
-        this.getQuadrantViewbox(this.config.zoomed_quadrant)
-      );
-    } else {
-      radarGroup.attr(
-        "transform",
-        translate(this.config.width / 2, this.config.height / 2)
-      );
-    }
-
-    const { gridGroup } = this.createGrid(radarGroup);
-
-    this.drawRings(gridGroup);
-
-    const rink = radarGroup.append("g").attr("id", "rink");
-
     const bubble = radarGroup
       .append("g")
       .attr("id", "bubble")
@@ -416,25 +187,5 @@ export class Radar {
       .velocityDecay(0.19) // magic number (found by experimentation)
       .force("collision", d3.forceCollide().radius(14).strength(0.85))
       .on("tick", ticked);
-  }
-
-  onDotMouseOver(callback: (dot: Dot) => void) {
-    this.eventHandlers.onDotMouseOver = callback;
-
-    return this;
-  }
-
-  onDotMouseOut(callback: (dot: Dot) => void) {
-    this.eventHandlers.onDotMouseOut = callback;
-
-    return this;
-  }
-
-  highlightDot(label: string) {
-    this.showBubble(this.dots.find((d) => d.label === label));
-  }
-
-  hideHighlightDot() {
-    this.hideBubble();
   }
 }

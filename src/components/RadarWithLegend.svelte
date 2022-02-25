@@ -21,33 +21,17 @@
   const onRadarDotHighlightHide = (event: CustomEvent<Dot>) => {
     console.log(event.detail);
   };
-
-  const onLegendItemMouseOver = (event: CustomEvent<{ label: string, quadrant: Quadrant }>) => {
-    radar.hideHighlightQuadrant();
-    radar.highlightDot(event.detail.label);
-    radar.showHighlightQuadrant(event.detail.quadrant);
-  };
-
-  const onLegendItemMouseOut = (event: CustomEvent<unknown>) => {
-    radar.hideHighlightDot();
-    radar.hideHighlightQuadrant();
-  };
 </script>
 
 <div class="legend">
   <Legend
-    on:mouseover={onLegendItemMouseOver}
-    on:mouseout={onLegendItemMouseOut}
     {data}
     {rings}
     {quadrants}
   />
 </div>
 <div class="radar">
-  <RadarArea>
-    <RadarGrid color="#ccc" size="800" />
-    <RadarRings ringLabelColor="red" ringLineColor="blue" rings="{rings}" />
-  </RadarArea>
+  <Radar rings="{rings}" data={data} quadrants="{quadrants}"/>
 </div>
 
 <style>
