@@ -4,6 +4,7 @@ import { Dot } from "./dot";
 import { DotPositioner } from "./dot-positioner";
 import type { QuadrantCoords, RingCoords } from "./coords";
 import type { RadarConfig } from "./radar-config";
+import { Quadrant } from "./radar-config";
 
 type SegmentedDots = Array<Array<Dot[]>>;
 
@@ -36,6 +37,11 @@ export class Radar {
     { radius: 310 },
     { radius: 400 },
   ];
+
+  private elements = {
+    rootEl: null,
+    quadrantHighlight: null,
+  };
 
   dots: Dot[];
   eventHandlers = {
@@ -184,6 +190,80 @@ export class Radar {
     });
   }
 
+  removeQuadrantHighlight() {
+    d3.select(this.elements.quadrantHighlight).remove();
+    this.elements.quadrantHighlight = null;
+  }
+
+  private renderQuarterHighlight(
+    svgRoot: d3.Selection<Element, unknown, null, undefined>,
+    quadrant: "top-right" | "top-left" | "bottom-right" | "bottom-left"
+  ) {
+    this.elements.quadrantHighlight = svgRoot.append("path");
+
+    let centerX: number;
+    let centerY: number;
+    let rotateAngle = 0;
+
+    const majorRadius = 400 - 1;
+    const minorRadius = 400 - 1;
+
+    switch (quadrant) {
+      case "top-right":
+        centerY = 0;
+        centerX = 400;
+        rotateAngle = 270;
+        break;
+      case "top-left":
+        centerY = 0;
+        centerX = 0;
+        rotateAngle = -180;
+        break;
+      case "bottom-right":
+        centerY = 400;
+        centerX = 400;
+        rotateAngle = 0;
+        break;
+      case "bottom-left":
+        centerY = 400;
+        centerX = 0;
+        rotateAngle = 90;
+        break;
+    }
+
+    this.elements.quadrantHighlight
+      .attr(
+        "d",
+        `
+          M  ${
+            centerX + majorRadius
+          }   ${centerY}  A  ${majorRadius} ${minorRadius} 0 0 1 ${centerX} ${
+          centerY + minorRadius
+        }
+      `
+      )
+      .style("stroke", "#EB4646")
+      .style("fill", "none")
+      .attr("transform-origin", `200 200`)
+      .style("transform", `rotate(${rotateAngle}deg)`);
+  }
+
+  highlightQuadrant(quadrant: Quadrant) {
+    switch (quadrant) {
+      case Quadrant.BottomRight:
+        return this.renderQuarterHighlight(
+          this.elements.rootEl,
+          "bottom-right"
+        );
+      case Quadrant.BottomLeft:
+        return this.renderQuarterHighlight(this.elements.rootEl, "bottom-left");
+      case Quadrant.TopLeft:
+        return this.renderQuarterHighlight(this.elements.rootEl, "top-left");
+      case Quadrant.TopRight:
+        return this.renderQuarterHighlight(this.elements.rootEl, "top-right");
+    }
+  }
+
   render() {
     const segments = createSegmentedArray();
 
@@ -195,6 +275,8 @@ export class Radar {
 
     const rootSvgElement = this.createRootElement();
     const radarGroup = rootSvgElement.append("g");
+
+    this.elements.rootEl = rootSvgElement;
 
     if ("zoomed_quadrant" in this.config) {
       rootSvgElement.attr(
@@ -289,7 +371,7 @@ export class Radar {
       }
 
       // show labels on dots?
-      if (false) {
+      if (config.showDotInitials) {
         const label = dot.getLabelFirstLetter();
 
         blip
@@ -324,6 +406,7 @@ export class Radar {
 
     return this;
   }
+
   onDotMouseOut(callback: (dot: Dot) => void) {
     this.eventHandlers.onDotMouseOut = callback;
 

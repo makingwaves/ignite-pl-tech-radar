@@ -42,6 +42,7 @@ export enum Ring {
 }
 
 export type RadarConfig = {
+  showDotInitials?: boolean;
   element: Element;
   width: number;
   height: number;
