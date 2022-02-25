@@ -237,6 +237,7 @@ export class Radar {
         break;
     }
 
+    // todo draw quarter instead only edge, animate it around
     this.elements.quadrantHighlight
       .attr(
         "d",
