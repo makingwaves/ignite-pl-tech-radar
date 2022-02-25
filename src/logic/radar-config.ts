@@ -8,6 +8,7 @@ export type RingConfig = {
   color: string;
   textColor: string;
   index: Ring;
+  radius: number;
 };
 
 export type EntryItem = {

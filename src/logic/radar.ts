@@ -103,6 +103,10 @@ export class Radar {
     ].join(" ");
   };
 
+  /**
+   * @deprecated
+   * @private
+   */
   private createRootElement() {
     return d3
       .select(this.config.element)
@@ -111,6 +115,11 @@ export class Radar {
       .attr("height", this.config.height);
   }
 
+  /**
+   * @deprecated
+   * @param radarEl
+   * @private
+   */
   private createGrid(
     radarEl: d3.Selection<SVGElement, unknown, HTMLElement, any>
   ) {
@@ -285,8 +294,6 @@ export class Radar {
     const radarGroup = rootSvgElement.append("g");
 
     this.elements.rootEl = rootSvgElement;
-
-    this.renderQuarterHighlight(rootSvgElement, "top-right");
 
     if ("zoomed_quadrant" in this.config) {
       rootSvgElement.attr(

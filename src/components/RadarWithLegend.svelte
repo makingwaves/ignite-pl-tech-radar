@@ -6,6 +6,7 @@
   import RadarGrid from "./RadarGrid.svelte";
   import { Quadrant } from "../logic/radar-config";
   import RadarArea from "./RadarArea.svelte";
+  import RadarRings from "./RadarRings.svelte";
 
   export let rings: RadarConfig["rings"];
   export let quadrants: RadarConfig["quadrants"];
@@ -45,6 +46,7 @@
 <div class="radar">
   <RadarArea>
     <RadarGrid color="#ccc" size="800" />
+    <RadarRings ringLabelColor="red" ringLineColor="blue" rings="{rings}" />
   </RadarArea>
 </div>
 

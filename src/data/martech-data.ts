@@ -2,15 +2,34 @@ import type { EntryItem, RadarConfig } from "../logic/radar-config";
 import { Quadrant, Ring, Moved } from "../logic/radar-config";
 
 const rings: RadarConfig["rings"] = [
-  { name: "ADOPT", color: "#EB4646", textColor: "#DBD1C7", index: Ring.Adopt },
-  { name: "TRIAL", color: "#CAE0DC", textColor: "#001932", index: Ring.Trial },
+  {
+    name: "ADOPT",
+    color: "#EB4646",
+    textColor: "#DBD1C7",
+    index: Ring.Adopt,
+    radius: 130,
+  },
+  {
+    name: "TRIAL",
+    color: "#CAE0DC",
+    textColor: "#001932",
+    index: Ring.Trial,
+    radius: 220,
+  },
   {
     name: "ASSESS",
     color: "#DBD1C7",
     textColor: "#001932",
     index: Ring.Assess,
+    radius: 310,
   },
-  { name: "HOLD", color: "#001932", textColor: "#DBD1C7", index: Ring.Hold },
+  {
+    name: "HOLD",
+    color: "#001932",
+    textColor: "#DBD1C7",
+    index: Ring.Hold,
+    radius: 400,
+  },
 ];
 
 const quadrants: RadarConfig["quadrants"] = [
