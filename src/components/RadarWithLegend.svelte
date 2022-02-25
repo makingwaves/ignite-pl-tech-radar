@@ -1,9 +1,11 @@
 <script lang="ts">
   import Legend from "./Legend.svelte";
-  import Radar  from "./Radar.svelte";
+  import Radar from "./Radar.svelte";
   import type { EntryItem, RadarConfig } from "../logic/radar-config";
-  import { Dot } from "../logic/dot";
+  import Dot from "./Dot.svelte";
+  import RadarGrid from "./RadarGrid.svelte";
   import { Quadrant } from "../logic/radar-config";
+  import RadarArea from "./RadarArea.svelte";
 
   export let rings: RadarConfig["rings"];
   export let quadrants: RadarConfig["quadrants"];
@@ -19,15 +21,15 @@
     console.log(event.detail);
   };
 
-  const onLegendItemMouseOver = (event: CustomEvent<{label: string, quadrant: Quadrant}>) => {
-    radar.hideHighlightQuadrant()
-    radar.highlightDot(event.detail.label)
-    radar.showHighlightQuadrant(event.detail.quadrant)
+  const onLegendItemMouseOver = (event: CustomEvent<{ label: string, quadrant: Quadrant }>) => {
+    radar.hideHighlightQuadrant();
+    radar.highlightDot(event.detail.label);
+    radar.showHighlightQuadrant(event.detail.quadrant);
   };
 
   const onLegendItemMouseOut = (event: CustomEvent<unknown>) => {
-    radar.hideHighlightDot()
-    radar.hideHighlightQuadrant()
+    radar.hideHighlightDot();
+    radar.hideHighlightQuadrant();
   };
 </script>
 
@@ -41,9 +43,9 @@
   />
 </div>
 <div class="radar">
-  <Radar bind:this={radar} on:dot-show-highlight={onRadarDotHighlightShow}
-         on:dot-hide-highlight={onRadarDotHighlightHide}
-         {data} {rings} {quadrants} />
+  <RadarArea>
+    <RadarGrid color="#ccc" size="800" />
+  </RadarArea>
 </div>
 
 <style>
