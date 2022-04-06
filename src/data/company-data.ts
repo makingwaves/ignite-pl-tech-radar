@@ -31,8 +31,8 @@ const languagesAndFrameworks: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Next.js",
+    ring: Ring.Trial,
+    label: "Next.js", //todo Ł.O.
     moved: Moved.None,
   },
   {
@@ -46,14 +46,14 @@ const languagesAndFrameworks: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Trial,
+    ring: Ring.Adopt,
     label: "Node.js",
     moved: Moved.None,
     link: "https://nodejs.org/en/",
   },
   {
-    ring: Ring.Adopt,
-    label: "Gatsby",
+    ring: Ring.Trial,
+    label: "Gatsby",//todo Ł. O.
     moved: Moved.None,
   },
   {
@@ -62,7 +62,7 @@ const languagesAndFrameworks: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Assess,
+    ring: Ring.Trial,
     label: "NestJS",
     moved: Moved.None,
   },
@@ -77,8 +77,8 @@ const languagesAndFrameworks: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "GraphQL",
+    ring: Ring.Trial,
+    label: "GraphQL", 
     moved: Moved.None,
   },
   {
@@ -87,7 +87,7 @@ const languagesAndFrameworks: EntryItemWithoutQuadrant[] = [
     moved: Moved.Out,
   },
   {
-    ring: Ring.Assess,
+    ring: Ring.Trial,
     label: "Java",
     moved: Moved.In,
   },
@@ -100,23 +100,23 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
+    ring: Ring.Trial,
     label: "Amazon SQS",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
+    ring: Ring.Trial,
     label: "Azure CosmosDB",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
+    ring: Ring.Assess,
     label: "Sanity.io",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Contentful",
+    ring: Ring.Trial,
+    label: "Contentful",// verify with projects that uses it
     moved: Moved.None,
   },
   {
@@ -126,7 +126,7 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "Vercel",
+    label: "Vercel", //to do Ł.O.
     moved: Moved.None,
   },
   {
@@ -155,7 +155,7 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Hold,
+    ring: Ring.Trial,
     label: "Umbraco",
     moved: Moved.None,
   },
@@ -175,47 +175,22 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Azure Functions",
+    ring: Ring.Trial,
+    label: "Azure B2C",
     moved: Moved.None,
   },
   {
     ring: Ring.Adopt,
-    label: "Azure ARM Templates",
+    label: "Azure serverless computing",
     moved: Moved.None,
   },
   {
     ring: Ring.Adopt,
-    label: "AWS EC2",
+    label: "AWS serverless computing",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Azure App Service",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Azure App Insights",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "AWS CloudWatch",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Azure Kubernetest Service",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "AWS Fargate",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Assess,
+    ring: Ring.Trial,
     label: "Power BI",
     moved: Moved.None,
   },
@@ -226,66 +201,31 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "Google Cloud Translation API",
+    label: "Azure SQL Server",
     moved: Moved.None,
   },
   {
     ring: Ring.Adopt,
-    label: "Microsoft SQL Server",
+    label: "Optimizely DXP", //todo verify - fifa extranet?
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Entity Framework",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Optimizely Search & Navigation",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Optimizely DXP",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "AWS SES",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Azure Sendgrid",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Azure VMs",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Azure Key Vault",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
+    ring: Ring.Assess,
     label: "Firebase",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Azure Cognitive Services",
+    ring: Ring.Trial,
+    label: "Azure Cognitive Services", //todo check project where it is used
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Blazor",
+    ring: Ring.Hold,
+    label: "Blazor", //todo verify
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
+    ring: Ring.Hold,
     label: "Sitefinity",
     moved: Moved.None,
   },
@@ -294,32 +234,12 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
     label: "Virto Commerce",
     moved: Moved.None,
   },
-  {
-    ring: Ring.Adopt,
-    label: "Amazon S3",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Amazon CloudFront",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Trial,
-    label: "AWS Lambda",
-    moved: Moved.None,
-  },
 ];
 
 const techniques: EntryItemWithoutQuadrant[] = [
   {
-    ring: Ring.Adopt,
+    ring: Ring.Trial,
     label: "OWASP",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "TDD",
     moved: Moved.None,
   },
   {
@@ -329,37 +249,22 @@ const techniques: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "Trunk Based Developmen",
+    label: "Trunk Based Development", //to do G. Cichosz
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "IaaC",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "CQRS",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
+    ring: Ring.Trial,
     label: "Microservices",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
+    ring: Ring.Trial,
     label: "DDD",
     moved: Moved.None,
   },
   {
     ring: Ring.Adopt,
-    label: "JAMstack",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Headless architecture",
+    label: "JAMstack", // to do Ł.O.
     moved: Moved.None,
   },
   {
@@ -370,11 +275,6 @@ const techniques: EntryItemWithoutQuadrant[] = [
   {
     ring: Ring.Adopt,
     label: "Scrum",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Pair Programming",
     moved: Moved.None,
   },
   {
@@ -393,28 +293,13 @@ const techniques: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Feature Toggling",
+    ring: Ring.Hold,
+    label: "A/B Testing", // to do ask matprat
     moved: Moved.None,
   },
   {
     ring: Ring.Adopt,
-    label: "Focus Time",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Always upgrade as a practice",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Collective code ownership",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Metrics",
+    label: "Application metrics",
     moved: Moved.None,
   },
   {
@@ -426,22 +311,7 @@ const techniques: EntryItemWithoutQuadrant[] = [
     ring: Ring.Adopt,
     label: "Using telemetry",
     moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "2-factor auth",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "code guides",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "auto code formatting",
-    moved: Moved.None,
-  },
+  }
 ];
 
 // todo
@@ -450,16 +320,21 @@ const techniques: EntryItemWithoutQuadrant[] = [
 const tools: EntryItemWithoutQuadrant[] = [
   {
     ring: Ring.Adopt,
+    label: "Infrastructure as code",
+    moved: Moved.None,
+  },
+  {
+    ring: Ring.Trial,
     label: "Grafana",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
+    ring: Ring.Trial,
     label: "ELK Stack",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
+    ring: Ring.Trial,
     label: "Kubernetes",
     moved: Moved.None,
   },
@@ -470,52 +345,17 @@ const tools: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "Gitlab",
+    label: "Azure DevOps",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
-    label: "Azure Devops",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
+    ring: Ring.Hold,
     label: "TeamCity",
     moved: Moved.None,
   },
   {
-    ring: Ring.Adopt,
+    ring: Ring.Hold,
     label: "Octopus",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "VSCode",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Visual Studio",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Jetbrains IDEs",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Adopt,
-    label: "Postman",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Trial,
-    label: "AWS CloudFormation",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Assess,
-    label: "AWS Cloud Development Kit",
     moved: Moved.None,
   },
   {
@@ -525,24 +365,11 @@ const tools: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Assess,
-    label: "Terraform",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Assess,
     label: "Serverless Framework",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Trial,
-    label: "GitHub Actions",
     moved: Moved.None,
   },
 ];
 
-// TODO: Prefixes ala https://ministryofjustice.github.io/hmpps-digital-tech-radar/docs/index.html
-// TODO: Conclusions, tools, etc. from state of JS 2021?
-// TODO: Add code formatting tools? E.g.: Prettier, ESLint...
 const items: EntryItem[] = [
   ...languagesAndFrameworks.map(
     (item): EntryItem => ({
