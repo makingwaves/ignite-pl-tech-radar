@@ -1,4 +1,6 @@
-Radar code was forked and rewriteen to svelte & typescript from
+# NoA Ignite Technology Radar
+
+Radar code was forked and rewritten to svelte & typescript from
 https://github.com/zalando/tech-radar
 
 Live
@@ -10,7 +12,15 @@ TODO
 - [ ] Cheat sheet with definitions
 - [ ] Expl what tech radar is for us
 
+### Development
+To start development run
+```
+    yarn dev 
+```
 
-deploy
-1. yarn build
-2. yarn deploy
+### Deployment
+To deploy run
+```
+    yarn build 
+    yarn deploy
+```
