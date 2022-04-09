@@ -31,8 +31,8 @@ const languagesAndFrameworks: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Trial,
-    label: "Next.js", //todo Ł.O.
+    ring: Ring.Adopt,
+    label: "Next.js", 
     moved: Moved.None,
   },
   {
@@ -53,7 +53,7 @@ const languagesAndFrameworks: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Trial,
-    label: "Gatsby",//todo Ł. O.
+    label: "Gatsby",
     moved: Moved.None,
   },
   {
@@ -116,7 +116,7 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Trial,
-    label: "Contentful",// verify with projects that uses it
+    label: "Contentful",
     moved: Moved.None,
   },
   {
@@ -126,7 +126,7 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "Vercel", //to do Ł.O.
+    label: "Vercel",
     moved: Moved.None,
   },
   {
@@ -249,7 +249,7 @@ const techniques: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "Trunk Based Development", //to do G. Cichosz
+    label: "Trunk Based Development",
     moved: Moved.None,
   },
   {
@@ -293,8 +293,8 @@ const techniques: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Hold,
-    label: "A/B Testing", // to do ask matprat
+    ring: Ring.Adopt,
+    label: "A/B Testing",
     moved: Moved.None,
   },
   {
@@ -314,9 +314,6 @@ const techniques: EntryItemWithoutQuadrant[] = [
   }
 ];
 
-// todo
-//  Postman, npm, Yarn, grunt, gulp, Confluence, Trello, Miro, Jira, OWASP ZAP, SonarCube, Sentry.io,
-// should we really go into that? some of them are industry standards
 const tools: EntryItemWithoutQuadrant[] = [
   {
     ring: Ring.Adopt,
@@ -349,6 +346,11 @@ const tools: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
+    ring: Ring.Trial,
+    label: "GitHub Actions",
+    moved: Moved.None,
+  },
+  {
     ring: Ring.Hold,
     label: "TeamCity",
     moved: Moved.None,
@@ -361,11 +363,6 @@ const tools: EntryItemWithoutQuadrant[] = [
   {
     ring: Ring.Trial,
     label: "Docker",
-    moved: Moved.None,
-  },
-  {
-    ring: Ring.Assess,
-    label: "Serverless Framework",
     moved: Moved.None,
   },
 ];
