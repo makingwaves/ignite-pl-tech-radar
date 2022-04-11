@@ -29,6 +29,9 @@ const languagesAndFrameworks: EntryItemWithoutQuadrant[] = [
     ring: Ring.Adopt,
     label: "React.js",
     moved: Moved.None,
+    description: `React is a free and open-source front-end JavaScript library for building user interfaces based on 
+      UI components. It is maintained by Meta and a community of individual developers and companies.`,
+    link: "https://reactjs.org/",
   },
   {
     ring: Ring.Adopt,
