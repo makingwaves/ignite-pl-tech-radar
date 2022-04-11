@@ -206,7 +206,7 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "Optimizely DXP", //todo verify - fifa extranet?
+    label: "Optimizely DXP",
     moved: Moved.None,
   },
   {
@@ -215,8 +215,8 @@ const productsPlatformsCloud: EntryItemWithoutQuadrant[] = [
     moved: Moved.None,
   },
   {
-    ring: Ring.Trial,
-    label: "Azure Cognitive Services", //todo check project where it is used
+    ring: Ring.Adopt,
+    label: "Azure Cognitive Services", 
     moved: Moved.None,
   },
   {
@@ -264,7 +264,7 @@ const techniques: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "JAMstack", // to do Ł.O.
+    label: "JAMstack",
     moved: Moved.None,
   },
   {
@@ -279,7 +279,7 @@ const techniques: EntryItemWithoutQuadrant[] = [
   },
   {
     ring: Ring.Adopt,
-    label: "Core Review",
+    label: "Code Review",
     moved: Moved.None,
   },
   {
