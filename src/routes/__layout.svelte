@@ -1,20 +1,29 @@
 <script>
   import Logo from "../components/Logo.svelte";
   import { page } from "$app/stores";
-  import { radars } from "../data/radars";
-  import { base } from '$app/paths';
+  import { base } from "$app/paths";
+  import { onMount } from "svelte";
+  import client from "../data/sanityClient.js";
 
+  let radars = [];
+  let title;
+  const query = "*[_type == \"technology\"]{title, path, name}";
+  onMount(async () => {
+    client.fetch(query).then(technology => {
+      radars = technology;
+    });
+  });
 
-  $: title = radars.find((r) => {
-    return `${base}${r.url}`.replaceAll('/', '') === $page.url.pathname.replaceAll('/', '');
-  }).title;
+  $: title = radars.find((radar) => {
+    return `${base}${radar?.path}`.replaceAll("/", "") === $page.url.pathname.replaceAll("/", "");
+  })?.title;
 </script>
 
 <div class="root-container">
   <header>
     <Logo />
     <h1>
-      {title}
+      {title || ''}
     </h1>
   </header>
   <main>
@@ -22,9 +31,9 @@
       <nav>
         {#each radars as radar}
           <a
-            class:active={$page.url.pathname === radar.url}
+            class:active={$page.url.pathname === radar.path}
             class="link"
-            href={base + radar.url}>{radar.link}</a
+            href={base + radar.path}>{radar?.name || ''}</a
           >
         {/each}
       </nav>
