@@ -2,12 +2,13 @@
   import Logo from "../components/Logo.svelte";
   import { page } from "$app/stores";
   import { radars } from "../data/radars";
-  import { base } from '$app/paths';
+  import { base } from "$app/paths";
 
 
   $: title = radars.find((r) => {
-    return `${base}${r.url}`.replaceAll('/', '') === $page.url.pathname.replaceAll('/', '');
+    return `${base}${r.url}`.replaceAll("/", "") === $page.url.pathname.replaceAll("/", "");
   }).title;
+  const disabledRoutes = import.meta.env.VITE_DISABLED_ROUTES.split(",");
 </script>
 
 <div class="root-container">
@@ -21,11 +22,13 @@
     <aside>
       <nav>
         {#each radars as radar}
-          <a
-            class:active={$page.url.pathname === radar.url}
-            class="link"
-            href={base + radar.url}>{radar.link}</a
-          >
+          {#if !disabledRoutes.includes(radar.url)}
+            <a
+              class:active={$page.url.pathname === radar.url}
+              class="link"
+              href={base + radar.url}>{radar.link}</a
+            >
+          {/if}
         {/each}
       </nav>
     </aside>
