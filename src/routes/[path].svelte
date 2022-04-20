@@ -8,8 +8,8 @@
   let currTechnology;
   let isLoading = true;
   let technologies = [];
-  const query = "*[_type == \"radar\" && isPublished]{description,entries[]->{'link': technology->link, 'active': technology->active, 'description': technology->description,'label': technology->label, moved, name, quadrant, ring}," +
-    "isPublished,'path': path.current,quadrants[],rightColumn,rings,title}";
+  const query = "*[_type == \"radar\" && isPublished]{description,entries[]{moved,ring,quadrant,'link': technology->link," +
+    "'active': technology->active,'description': technology->description,'label': technology->label},isPublished,'path': path.current,quadrants[],rightColumn,rings,title}";
   onMount(() => {
     client.fetch(query).then(technology => {
       technologies = technology;
