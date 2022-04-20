@@ -7,7 +7,7 @@
 
   let radars = [];
   let title;
-  const query = "*[_type == \"technology\"]{title, path, name}";
+  const query = "*[_type == \"radar\" && isPublished]{title, 'path': path.current, name}";
   onMount(async () => {
     client.fetch(query).then(technology => {
       radars = technology;
@@ -15,6 +15,7 @@
   });
 
   $: title = radars.find((radar) => {
+    document.title = radar.name;
     return `${base}${radar?.path}`.replaceAll("/", "") === $page.url.pathname.replaceAll("/", "");
   })?.title;
 </script>
