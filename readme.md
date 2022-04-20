@@ -14,7 +14,7 @@ TODO
 
 ### Development
 To start development run
-```
+``` cp .env.example .env &
     yarn dev 
 ```
 
