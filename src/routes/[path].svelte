@@ -2,13 +2,14 @@
   import RadarWithLegend from "../components/RadarWithLegend.svelte";
   import DescriptionSection from "../components/DescriptionSection.svelte";
   import { onMount } from "svelte";
-  import client from "../data/sanityClient.js";
+  import client from "../api/sanityClient.js";
   import { page } from "$app/stores";
 
   let currTechnology;
   let isLoading = true;
   let technologies = [];
-  const query = "*[_type == \"radar\" && isPublished]{description,entries[]{moved,ring,quadrant,'link': technology->link," +
+  const isPublished = import.meta.env.DEV ? '' : '&& isPublished';
+  const query = `*[_type == "radar" ${isPublished}]` + "{description,entries[]{moved,ring,quadrant,'link': technology->link," +
     "'active': technology->active,'description': technology->description,'label': technology->label},isPublished,'path': path.current,quadrants[],rightColumn,rings,title}";
   onMount(() => {
     client.fetch(query).then(technology => {

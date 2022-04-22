@@ -3,11 +3,12 @@
   import { page } from "$app/stores";
   import { base } from "$app/paths";
   import { onMount } from "svelte";
-  import client from "../data/sanityClient.js";
+  import client from "../api/sanityClient.js";
 
   let radars = [];
   let title;
-  const query = "*[_type == \"radar\" && isPublished]{title, 'path': path.current, name}";
+  const isPublished = import.meta.env.DEV ? '' : '&& isPublished';
+  const query = `*[_type == "radar" ${isPublished}]{title, 'path': path.current, name}`;
   onMount(async () => {
     client.fetch(query).then(technology => {
       radars = technology;
