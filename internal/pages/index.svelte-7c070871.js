@@ -1,0 +1,1 @@
+import{S as n,i as s,s as e,w as r}from"../chunks/vendor-84ea9238.js";import{r as a}from"../chunks/singletons-a6a7384f.js";const u=c;async function c(t,o){return a.goto(t,o,[])}function i(t){return r(()=>u("/tech")),[]}class m extends n{constructor(o){super();s(this,o,i,null,e,{})}}export{m as default};
