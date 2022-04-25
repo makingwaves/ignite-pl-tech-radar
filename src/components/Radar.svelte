@@ -16,7 +16,6 @@
 
   const dispatcher = createEventDispatcher();
 
-  // TODO this onMount causes not reloading radar problem
   onMount(() => {
     const radar = new Radar({
       element: htmlNode,

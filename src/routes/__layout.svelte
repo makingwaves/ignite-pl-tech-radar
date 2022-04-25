@@ -1,42 +1,34 @@
 <script>
   import Logo from "../components/Logo.svelte";
   import { page } from "$app/stores";
+  import { radars } from "../data/radars";
   import { base } from "$app/paths";
-  import { onMount } from "svelte";
-  import client from "../api/sanityClient.js";
 
-  let radars = [];
-  let title;
-  const isPublished = import.meta.env.DEV ? '' : '&& isPublished';
-  const query = `*[_type == "radar" ${isPublished}]{title, 'path': path.current, name}`;
-  onMount(async () => {
-    client.fetch(query).then(technology => {
-      radars = technology;
-    });
-  });
 
-  $: title = radars.find((radar) => {
-    document.title = radar.name;
-    return `${base}${radar?.path}`.replaceAll("/", "") === $page.url.pathname.replaceAll("/", "");
-  })?.title;
+  $: title = radars.find((r) => {
+    return `${base}${r.url}`.replaceAll("/", "") === $page.url.pathname.replaceAll("/", "");
+  }).title;
+  const disabledRoutes = import.meta.env.VITE_DISABLED_ROUTES.split(",");
 </script>
 
 <div class="root-container">
   <header>
     <Logo />
     <h1>
-      {title || ''}
+      {title}
     </h1>
   </header>
   <main>
     <aside>
       <nav>
         {#each radars as radar}
-          <a
-            class:active={$page.url.pathname === radar.path}
-            class="link"
-            href={base + radar.path}>{radar?.name || ''}</a
-          >
+          {#if !disabledRoutes.includes(radar.url)}
+            <a
+              class:active={$page.url.pathname === radar.url}
+              class="link"
+              href={base + radar.url}>{radar.link}</a
+            >
+          {/if}
         {/each}
       </nav>
     </aside>
