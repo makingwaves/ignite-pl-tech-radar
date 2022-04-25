@@ -1,13 +1,6 @@
 <script>
-  import RadarWithLegend from "../components/RadarWithLegend.svelte";
-  import { CompanyData } from "../data/company-data";
-  import RadarDescription from "../components/RadarDescription.svelte";
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
+
+  onMount(() => goto('/tech'));
 </script>
-
-<RadarWithLegend
-  data={CompanyData.items}
-  quadrants={CompanyData.quadrants}
-  rings={CompanyData.rings}
-/>
-
-<RadarDescription />

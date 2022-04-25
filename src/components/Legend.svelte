@@ -38,6 +38,7 @@
               <span
                 slot="title"
                 class="entry-item"
+                style={openedAccordion === item.label ? 'font-weight: 700' : ''}
                 on:mouseover={() => dispatch("mouseover", item)}
                 on:mouseout={() => dispatch("mouseout", item)}
                 data-label={item.label}>
