@@ -1,24 +1,26 @@
-<script>
+<script context="module">
+  import clientS from "../api/sanityClient.js";
+  /** @type {import("./[slug]").Load} */
+  export async function load({ params, fetch, session, stuff }) {
+    const q = `*[_type == "radar" && isPublished]{title, 'path': path.current, name}`;
+    const technologies = await clientS.fetch(q);
+    return {
+      status: 200,
+      props: {
+        technologies
+      }
+    };
+  }
+</script>
+
+<script lang="ts">
   import Logo from "../components/Logo.svelte";
   import { page } from "$app/stores";
   import { base } from "$app/paths";
-  import { onMount } from "svelte";
-  import client from "../api/sanityClient.js";
 
-  let radars = [];
-  let title;
-  const isPublished = import.meta.env.DEV ? '' : '&& isPublished';
-  const query = `*[_type == "radar" ${isPublished}]{title, 'path': path.current, name}`;
-  onMount(async () => {
-    client.fetch(query).then(technology => {
-      radars = technology;
-    });
-  });
+  let title = 'test';
 
-  $: title = radars.find((radar) => {
-    document.title = radar.name;
-    return `${base}${radar?.path}`.replaceAll("/", "") === $page.url.pathname.replaceAll("/", "");
-  })?.title;
+  export let technologies: Array<{name: string; path: string; title: string}> = []
 </script>
 
 <div class="root-container">
@@ -31,11 +33,11 @@
   <main>
     <aside>
       <nav>
-        {#each radars as radar}
+        {#each technologies as tech}
           <a
-            class:active={$page.url.pathname === radar.path}
+            class:active={$page.url.pathname === tech.path}
             class="link"
-            href={base + radar.path}>{radar?.name || ''}</a
+            href={base + tech.path}>{tech?.name || ''}</a
           >
         {/each}
       </nav>
