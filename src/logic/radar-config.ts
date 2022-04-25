@@ -17,6 +17,7 @@ export type EntryItem = {
   active?: boolean;
   moved: Moved;
   link?: string;
+  description?: string;
 };
 
 export type EntryItemWithoutQuadrant = Omit<EntryItem, "quadrant">;
