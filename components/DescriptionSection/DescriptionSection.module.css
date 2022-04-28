@@ -1,0 +1,15 @@
+.wrapper {
+    grid-column: 1/4;
+    padding-top: 60px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-gap: 60px;
+}
+
+.right-column {
+    grid-column: 2/2;
+}
+
+.left-column {
+    grid-column: 1/2;
+}
