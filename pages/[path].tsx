@@ -1,10 +1,10 @@
-import { NextPage } from 'next';
-import { RadarWithLegend } from '../components/RadarWithLegend/RadarWithLegend';
-import { DescriptionSection } from '../components/DescriptionSection/DescriptionSection';
-import client from '../services/sanityClient';
+import { NextPage } from "next";
+import { RadarWithLegend } from "../components/RadarWithLegend/RadarWithLegend";
+import { DescriptionSection } from "../components/DescriptionSection/DescriptionSection";
+import client from "../services/sanityClient";
 
 const isPublished =
-  process.env.NODE_ENV === 'development' ? '' : '&& isPublished';
+  process.env.NODE_ENV === "development" ? "" : "&& isPublished";
 
 type StaticProps = {
   radar: any;
@@ -19,9 +19,9 @@ const Path: NextPage<StaticProps> = ({ radar }) => (
     />
 
     <DescriptionSection
-      rightColumn={radar.rightColumn}
+      rightColumn={radar?.rightColumn || []}
       rings={radar?.rings || []}
-      description={radar.description}
+      description={radar?.description || ""}
     />
   </>
 );

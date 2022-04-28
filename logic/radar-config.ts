@@ -1,6 +1,6 @@
-import {Quadrant} from "../enum/Quadrant.enum";
-import {Ring} from "../enum/Ring.enum";
-import {Moved} from "../enum/Moved.enum";
+import { Quadrant } from "../enum/Quadrant.enum";
+import { Ring } from "../enum/Ring.enum";
+import { Moved } from "../enum/Moved.enum";
 
 export type QuadrantConfig = {
   name: string;
@@ -25,7 +25,6 @@ export type EntryItem = {
 };
 
 export type EntryItemWithoutQuadrant = Omit<EntryItem, "quadrant">;
-
 
 export type RadarConfig = {
   showDotInitials?: boolean;

@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
+    "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
+    "deploy": "gh-pages -d .next -t"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makingwaves/ignite-pl-tech-radar.git"
   },
   "dependencies": {
     "@portabletext/react": "^1.0.6",
@@ -26,5 +32,11 @@
     "gh-pages": "^3.2.3",
     "prettier": "^2.6.2",
     "typescript": "4.6.3"
+  },
+  "author": "",
+  "license": "ISC",
+  "prettier": {
+    "arrowParens": "always",
+    "bracketSpacing": true
   }
 }

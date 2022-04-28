@@ -1,6 +1,6 @@
-import styles from './DescriptionSection.module.css';
-import { FC } from 'react';
-import { PortableText } from '@portabletext/react';
+import styles from "./DescriptionSection.module.css";
+import { FC } from "react";
+import { PortableText } from "@portabletext/react";
 
 type Props = {
   rightColumn?: any;
@@ -30,7 +30,7 @@ export const DescriptionSection: FC<Props> = ({
       </ul>
     </div>
     <div className={styles.rightColumn}>
-      <PortableText value={rightColumn} components={rightColumn} />
+      <PortableText value={rightColumn || []} />
     </div>
   </div>
 );

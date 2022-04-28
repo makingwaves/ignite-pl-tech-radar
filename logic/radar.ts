@@ -5,7 +5,7 @@ import { Dot } from "./dot";
 import { DotPositioner } from "./dot-positioner";
 import type { QuadrantCoords, RingCoords } from "./coords";
 import type { RadarConfig } from "./radar-config";
-import { Quadrant } from "./radar-config";
+import { Quadrant } from "../enum/Quadrant.enum";
 
 type SegmentedDots = Array<Array<Dot[]>>;
 
