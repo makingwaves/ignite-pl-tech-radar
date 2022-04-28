@@ -1,7 +1,7 @@
-import React, { FC, useState } from 'react';
-import { RingConfig, QuadrantConfig, EntryItem } from '../../types/radar.types';
-import styles from './Legend.module.css';
-import { Radar as RadarD3 } from '../../logic/radar';
+import React, { FC, useState } from "react";
+import { RingConfig, QuadrantConfig, EntryItem } from "../../types/radar.types";
+import styles from "./Legend.module.css";
+import { Radar as RadarD3 } from "../../logic/radar";
 
 type Props = {
   rings: RingConfig[];
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export const Legend: FC<Props> = ({ radar, rings, quadrants, entryItems }) => {
-  const [openedAccordion, setOpenedAccordion] = useState('NONE');
+  const [openedAccordion, setOpenedAccordion] = useState("NONE");
 
   const handleMouseOver = (label: string) => {
     if (radar !== null) {
@@ -27,7 +27,7 @@ export const Legend: FC<Props> = ({ radar, rings, quadrants, entryItems }) => {
 
   return (
     <>
-      <ul className={styles['quadrant-list']}>
+      <ul className={styles["quadrant-list"]}>
         {quadrants.map((quadrant) => (
           <li
             key={quadrant.index}
@@ -39,11 +39,11 @@ export const Legend: FC<Props> = ({ radar, rings, quadrants, entryItems }) => {
             {rings.map((ring) => (
               <div
                 key={ring.index}
-                className={styles['ring-wrapper']}
+                className={styles["ring-wrapper"]}
                 data-ring-index="0"
                 style={{ borderColor: ring.color }}
               >
-                <h3 className={styles['ring-label']}>{ring.name}</h3>
+                <h3 className={styles["ring-label"]}>{ring.name}</h3>
 
                 {entryItems
                   .sort((a, b) => a.label.localeCompare(b.label))
@@ -58,16 +58,18 @@ export const Legend: FC<Props> = ({ radar, rings, quadrants, entryItems }) => {
                         onClick={() =>
                           setOpenedAccordion(
                             openedAccordion === entryItem.label
-                              ? 'NONE'
+                              ? "NONE"
                               : entryItem.label
                           )
                         }
                       >
                         <span
                           key={entryItem.label}
-                          className={styles['entry-item']}
+                          className={styles["entry-item"]}
                           style={
-                            openedAccordion === entryItem.label ? { fontWeight: 700 } : {}
+                            openedAccordion === entryItem.label
+                              ? { fontWeight: 700 }
+                              : {}
                           }
                           onMouseOver={() => handleMouseOver(entryItem.label)}
                           onMouseOut={handleMouseOut}
@@ -78,18 +80,18 @@ export const Legend: FC<Props> = ({ radar, rings, quadrants, entryItems }) => {
                       </div>
 
                       {openedAccordion === entryItem.label && (
-                        <div className={styles['collapsible-body']}>
+                        <div className={styles["collapsible-body"]}>
                           {!entryItem.description?.length ||
                             (entryItem.link && (
                               <>
                                 <hr
                                   style={{
                                     marginLeft: 20,
-                                    borderTop: '1px solid #a4a6a9',
+                                    borderTop: "1px solid #a4a6a9",
                                   }}
                                 />
 
-                                <p className={styles['entry-description']}>
+                                <p className={styles["entry-description"]}>
                                   {entryItem.description}
 
                                   {entryItem.link && (
@@ -99,6 +101,7 @@ export const Legend: FC<Props> = ({ radar, rings, quadrants, entryItems }) => {
                                         className={styles.link}
                                         href={entryItem.link}
                                         target="_blank"
+                                        rel="noreferrer"
                                       >
                                         See more &gt;
                                       </a>
