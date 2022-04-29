@@ -1,0 +1,16 @@
+.link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  line-height: 2;
+}
+
+.link:hover {
+  color: #eb4646;
+  font-weight: 700;
+}
+
+.link-active {
+  color: #eb4646;
+  font-weight: 700;
+}

@@ -1,0 +1,40 @@
+html,
+body {
+  margin: 0;
+  background: #f0eeea;
+  font-family: "Aften Screen", arial, helvetica, sans-serif;
+  padding: 50px;
+}
+
+header {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+}
+
+h1 {
+  font-weight: 400;
+}
+
+main {
+  display: grid;
+  grid-template-columns: 200px 400px auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+li {
+  margin: 25px 50px 0 0;
+}
+
+h3 {
+  margin-top: 50px;
+}
