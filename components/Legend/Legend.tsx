@@ -67,7 +67,8 @@ export const Legend: FC<Props> = ({ radar, rings, quadrants, entryItems }) => {
                           key={entryItem.label}
                           className={styles["entry-item"]}
                           style={
-                            openedAccordion === entryItem.label
+                            openedAccordion === entryItem.label &&
+                            entryItem.description?.length
                               ? { fontWeight: 700 }
                               : {}
                           }
