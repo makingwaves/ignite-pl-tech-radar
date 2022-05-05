@@ -1,49 +1,51 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import styles from './Layout.module.css';
-import { ReactNode } from 'react';
-import { useRouter } from 'next/router';
+import Image from "next/image";
+import Link from "next/link";
+import styles from "./Layout.module.css";
+import { ReactNode } from "react";
+import { useRouter } from "next/router";
+import { Radar, SidebarRoute } from "../../types/radar.types";
+import { Meta } from "../Meta/Meta";
 
 type LayoutProps = {
   children: ReactNode;
+  radar: Radar;
+  sidebarRoutes: SidebarRoute[];
 };
 
-type Radar = {
-  path: string;
-  name: string;
-};
-
-export default function Layout({ children }: LayoutProps) {
+export default function Layout({
+  children,
+  radar,
+  sidebarRoutes = [],
+}: LayoutProps) {
   const router = useRouter();
-  const title = 'NoA Ignite PL - Tech Radar Apr 2022\n';
-  const radars: Radar[] = [{ path: '/tech', name: 'NoA Tech Radar' }];
 
   return (
     <div>
+      <Meta title={radar?.name || ""} description={radar?.description || ""} />
       <header>
         <Image
-          src={'/logo.svg'}
+          src={"/logo.svg"}
           alt="NoA Ignite Logo"
           width={200}
           height={70}
         />
 
-        <h1>{title}</h1>
+        <h1>{radar?.title || ""}</h1>
       </header>
 
       <main>
         <aside>
           <nav>
-            {radars.map((radar) => (
-              <Link key={radar.name} href={radar.path}>
+            {sidebarRoutes.map((page) => (
+              <Link key={page.name} href={page.path}>
                 <a
                   className={
-                    router.asPath === radar.path
-                      ? styles['link-active']
-                      : 'link'
+                    router.asPath === page.path
+                      ? styles["link-active"]
+                      : styles["link"]
                   }
                 >
-                  {radar?.name || ''}
+                  {page?.name || ""}
                 </a>
               </Link>
             ))}

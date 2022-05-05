@@ -1,6 +1,7 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { Radar as RadarD3 } from '../../logic/radar';
-import { EntryItem, QuadrantConfig, RingConfig } from '../../types/radar.types';
+import { FC, useEffect, useRef } from "react";
+import { Radar as RadarD3 } from "../../logic/radar";
+import { EntryItem, QuadrantConfig, RingConfig } from "../../types/radar.types";
+import { useRouter } from "next/router";
 
 type Props = {
   quadrants: [QuadrantConfig, QuadrantConfig, QuadrantConfig, QuadrantConfig];
@@ -11,6 +12,7 @@ type Props = {
 
 export const Radar: FC<Props> = ({ quadrants, rings, entries, setRadar }) => {
   const svgRef = useRef(null);
+  const { asPath } = useRouter();
 
   useEffect(() => {
     if (svgRef.current !== null) {
@@ -19,18 +21,18 @@ export const Radar: FC<Props> = ({ quadrants, rings, entries, setRadar }) => {
         width: 800,
         height: 800,
         colors: {
-          background: '#F0EEEA',
-          grid: '#CECFD2',
-          inactive: '#ddd',
+          background: "#F0EEEA",
+          grid: "#CECFD2",
+          inactive: "#ddd",
         },
         quadrants,
         rings,
         entries,
       });
 
-      setRadar(radar)
+      setRadar(radar);
     }
-  }, []);
+  }, [asPath]);
 
   return (
     <div>
