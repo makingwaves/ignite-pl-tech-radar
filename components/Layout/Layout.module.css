@@ -11,6 +11,8 @@
 }
 
 .link-active {
+  display: block;
+  line-height: 2;
   color: #eb4646;
   font-weight: 700;
 }

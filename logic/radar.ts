@@ -273,6 +273,10 @@ export class Radar {
     }
   }
 
+  remove() {
+    d3.select("svg").selectAll("*").remove();
+  }
+
   render() {
     const segments = createSegmentedArray();
 
