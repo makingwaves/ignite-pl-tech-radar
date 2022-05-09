@@ -18,6 +18,8 @@ To start development run
 
 ### Deployment
 
+Auto deploy is enabled on branch `master`.
+
 To deploy run
 
 ```
