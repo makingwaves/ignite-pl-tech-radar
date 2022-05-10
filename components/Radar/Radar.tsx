@@ -12,7 +12,9 @@ type Props = {
 
 export const Radar: FC<Props> = ({ quadrants, rings, entries, setRadar }) => {
   const svgRef = useRef(null);
-  const { asPath } = useRouter();
+  const {
+    query: { path },
+  } = useRouter();
 
   useEffect(() => {
     if (svgRef.current !== null) {
@@ -32,7 +34,7 @@ export const Radar: FC<Props> = ({ quadrants, rings, entries, setRadar }) => {
 
       setRadar(radar);
     }
-  }, [asPath]);
+  }, [path]);
 
   return (
     <div>
