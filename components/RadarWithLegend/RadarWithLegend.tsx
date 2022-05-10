@@ -1,9 +1,10 @@
-import React, { FC, useEffect, useState } from 'react';
-import styles from './RadarWithLegend.module.css';
-import { Legend } from '../Legend/Legend';
-import { Radar } from '../Radar/Radar';
-import { EntryItem, QuadrantConfig, RingConfig } from '../../types/radar.types';
-import { Radar as RadarD3 } from '../../logic/radar';
+import React, { FC, useEffect, useState } from "react";
+import styles from "./RadarWithLegend.module.css";
+import { Legend } from "../Legend/Legend";
+import { Radar } from "../Radar/Radar";
+import { EntryItem, QuadrantConfig, RingConfig } from "../../types/radar.types";
+import { Radar as RadarD3 } from "../../logic/radar";
+import { useRouter } from "next/router";
 
 type Props = {
   rings: [RingConfig, RingConfig, RingConfig, RingConfig];
@@ -16,12 +17,19 @@ export const RadarWithLegend: FC<Props> = ({
   entryItems,
 }) => {
   const [radar, setRadar] = useState<RadarD3 | null>(null);
+  const { asPath } = useRouter();
 
   useEffect(() => {
     if (radar !== null) {
       radar.render();
     }
   });
+
+  useEffect(() => {
+    if (radar !== null) {
+      radar.remove();
+    }
+  }, [asPath]);
 
   return (
     <>
