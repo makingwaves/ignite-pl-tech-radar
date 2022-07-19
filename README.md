@@ -7,7 +7,7 @@ Radar content is maintained in Sanity CMS
 https://ignite-pl-tech-radar-sanity.sanity.studio/desk
 
 Live
-https://makingwaves.github.io/ignite-pl-tech-radar/
+https://tech-radar.noaignite.pl/tech
 
 - [ ] Make radars for martech and frontend/node/npm
 
